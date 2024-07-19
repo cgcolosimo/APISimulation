@@ -1,0 +1,61 @@
+schema: SimV1
+name: Swagger Petstore
+# A decision point/trigger (ie. Status?state=available is stubbed but state=pending goes to the real service)
+
+connections:
+  - name: petFailCon
+    port: 23444
+    forward:
+      to: realPetstoreEndpoint
+      mode: SimulateFirst
+
+  - name: realPetstoreEndpoint
+    endpoint: https://petstore.swagger.io/v2/
+    listen: false
+
+services:        
+- name: /v2/pet - GET - findByStatusAVAILABLE
+  steps:
+  - name: find available pet request
+    direction: In
+    from: petFailCon
+    trigger:
+    - type: Path
+      value: /v2/pet/findByStatus
+    - property: Method
+      value: GET
+    - type: Query
+      key: status
+      value: available
+    buffer:
+    - type: Query
+      key: status
+      name: petStatus
+  - name: find available pet response
+    message:
+      statusCode: 200
+    insert:
+      - file: "./Petstore/petData/available.json"
+
+- name: /v2/pet - GET - findByStatusSOLD
+  steps:
+  - name: find SOLD pet request
+    direction: In
+    from: petFailCon
+    trigger:
+    - type: Path
+      value: /v2/pet/findByStatus
+    - property: Method
+      value: GET
+    - type: Query
+      key: status
+      value: sold
+    buffer:
+    - type: Query
+      key: status
+      name: petStatus
+  - name: find sold pet response
+    message:
+      statusCode: 200
+    insert:
+      - file: "./Petstore/petData/sold.json"

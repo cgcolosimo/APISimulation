@@ -1,0 +1,94 @@
+schema: SimV1
+connections:
+  - name: SITSimulate
+    listen: true
+    port: 17079
+  - name: SITSimulateOut
+    listen: false
+    endpoint: http://localhost:17079
+
+resources:
+  - name: testdata
+
+services:
+
+  - name: FNV fachnummern Test
+    steps:
+    - description: >
+        ******************************************************************
+        Test Objekt Art 21119
+        ******************************************************************
+      name: Objekt Art 21119
+      direction: Out
+      to: SITSimulateOut
+      insert:
+        - uri: /fnv/rest/fachnummern?objektArt=21119&anzahl=1
+      resource:
+        insertOrUpdate:
+          - ref: testdata
+            value:
+              fallNummer: "8400{RND[9]}"
+
+      message:
+        method: POST        
+        headers:
+          - key: baggage
+            value: 01_scenario=sc1,tta=true
+          - key: encoding
+            value: UTF-8
+          - key: Content-Type
+            value: application/json
+    - direction: In
+      name: Verify Objekt Art 21119
+      resource:
+        read:
+          - ref: testdata
+            name: result
+            one: fallNummer
+      verify:
+        - property: StatusCode
+          value: '200 OK'  
+        - value: "{B[result.fallNummer]}"
+
+  - description: >
+      ******************************************************************
+      Objeckt Art 21119 und Anzahl 1
+      ******************************************************************
+  - name: FNV fachnummern Objekt Art with ObjekArt and Anzahl
+    steps:
+    - direction: In
+      from: SITSimulate
+      trigger:
+        - type: Path
+          value: '/fnv/rest/fachnummern'
+        - type: Query
+          key: objektArt
+          value: 21119
+        - type: Query
+          key: anzahl
+          value: 1
+        - property: Method
+          value: POST
+        - type: Header
+          key: baggage
+          value: '*01_scenario=sc1*'
+    - direction: Out
+      resource:
+        read:
+          - ref: testdata
+            name: result
+            one: fallNummer
+      message:
+        headers:
+          - key: encoding
+            value: UTF-8
+          - key: Content-Type
+            value: text/plain
+          - key: Keep-Alive
+            value: timeout=10
+          - key: Connection
+            value: Keep-Alive
+          - key: Transfer-Encoding
+            value: chunked
+      insert: 
+        - value: "{B[result.fallNummer]}"

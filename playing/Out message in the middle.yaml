@@ -1,0 +1,48 @@
+schema: SimV1
+name: Send Out in in
+
+connections:
+  - name: out in in message listener
+    port: 15555
+
+  - name: out message endpoint
+    endpoint: https://catfact.ninja/fact
+    listen: false
+
+  - name: Test message endpoint
+    endpoint: http://localhost:15555
+    listen: false
+
+services:
+# Test
+  - name: Invoke service
+    steps:
+    - name: Test Request
+      direction: Out
+      to: Test message endpoint
+    - name: Test Response
+      verify:
+        - property: StatusCode
+          value: '200 OK'
+
+
+# Simulation
+  - name: message flow
+    steps:
+      - direction: In
+        from: out in in message listener
+        name: First in message
+
+      - name: send to cat out
+        direction: Out
+        to: out message endpoint
+        message:
+          method: GET
+      - direction: In
+        from: out message endpoint
+        name: Retun from cat out
+
+      - direction: Out
+        name: Last message response
+        message:
+            payload: This the response from API sim

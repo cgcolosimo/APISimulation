@@ -1,0 +1,73 @@
+schema: SimV1
+
+connections:
+  - name: mobcon
+    port: 17708
+  - name: mobconOut
+    endpoint: http://localhost:17708
+    listen: false
+
+services:
+# Simulation
+  - name: AGS vertragssuche G13107668
+    steps:
+    - direction: In
+      from: mobcon
+      trigger:
+        - type: Path
+          value: '/ags/vertragssuche/rest/vertraege/suche'
+        - type: Header
+          key: baggage
+          value: '*01_scenario=sc1*'
+        - jsonPath: $.geschaeftsnummern[0]
+          value: G13107668
+        - type: Query
+          key: enrichIspData
+          value: false
+        - type: Query
+          key: enrichObjekte
+          value: false
+      buffer:
+        - type: Payload
+          jsonPath: $.geschaeftsnummern[0]
+          name: geschaeftsnummer
+    - direction: Out
+      message:
+        headers:
+        - key: encoding
+          value: UTF-8      
+        - key: Content-Type
+          value: application/json
+        - key: Keep-Alive
+          value: timeout=10
+        statusCode: 200
+      insert:
+        - file: "MOB/vertraege-suche-{B[geschaeftsnummer]}.json"
+
+# Test
+  - name: Parameter in file Geschäftsnummer G13107668
+    steps:
+      - direction: Out
+        to: mobConOut      
+        insert:
+          - uri: /ags/vertragssuche/rest/vertraege/suche?enrichIspData=false&enrichObjekte=false
+        message:
+          method: POST                
+          headers:
+            - key: baggage
+              value: 01_scenario=sc1,tta=true
+            - key: encoding
+              value: UTF-8
+            - key: Content-Type
+              value: application/json
+          payload: >
+            { "geschaeftsnummern": ["G13107668"] }
+      - direction: In
+        name: Verify Geschäftsnummer G13107668
+        verify:
+          - property: StatusCode
+            value: 200 OK
+          - jsonPath: $.vertraege[0].vertragsFachnummer
+            value: 800670736220
+          - jsonPath: $.vertraege[0].geschaeftsnummer
+            value: G13107668

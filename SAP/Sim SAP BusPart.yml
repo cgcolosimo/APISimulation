@@ -1,0 +1,27 @@
+schema: SimV1
+services:
+- name: ''
+  steps:
+  - direction: In
+    trigger:
+    - type: Path
+      value: /sap/opu/odata/SAP/API_BUSINESS_PARTNER/A_BusinessPartner(BusinessPartner='1001726')
+  - message:
+      headers:
+      - key: dataserviceversion
+        value: 2.0
+      - key: sap-metadata-last-modified
+        value: Tue, 18 May 2021 16:55:04 GMT
+      - key: Cache-Control
+        value: no-store, no-cache
+      - key: sap-processing-info
+        value: ODataBEP=,crp=,RAL=,st=,MedCacheHub=SHM,codeployed=,softstate=
+      - key: sap-server
+        value: true
+      - key: sap-perf-fesrec
+        value: 123510.000000
+      - key: Content-Type
+        value: application/atom+xml; type=entry; charset=utf-8
+      payload: |-
+        <?xml version="1.0" encoding="utf-8"?><entry xml:base="https://sapdemo21.tricentis.com:44301/sap/opu/odata/SAP/API_BUSINESS_PARTNER/" xmlns="http://www.w3.org/2005/Atom" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"><id>https://sapdemo21.tricentis.com:44301/sap/opu/odata/SAP/API_BUSINESS_PARTNER/A_BusinessPartner('1001726')</id><title type="text">A_BusinessPartner('1001726')</title><updated>2024-06-25T17:26:35Z</updated><category term="API_BUSINESS_PARTNER.A_BusinessPartnerType" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/><link href="A_BusinessPartner('1001726')" rel="edit" title="A_BusinessPartnerType"/><link href="A_BusinessPartner('1001726')/to_BuPaIdentification" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BuPaIdentification" type="application/atom+xml;type=feed" title="to_BuPaIdentification"/><link href="A_BusinessPartner('1001726')/to_BuPaIndustry" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BuPaIndustry" type="application/atom+xml;type=feed" title="to_BuPaIndustry"/><link href="A_BusinessPartner('1001726')/to_BusinessPartnerAddress" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BusinessPartnerAddress" type="application/atom+xml;type=feed" title="to_BusinessPartnerAddress"/><link href="A_BusinessPartner('1001726')/to_BusinessPartnerBank" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BusinessPartnerBank" type="application/atom+xml;type=feed" title="to_BusinessPartnerBank"/><link href="A_BusinessPartner('1001726')/to_BusinessPartnerContact" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BusinessPartnerContact" type="application/atom+xml;type=feed" title="to_BusinessPartnerContact"/><link href="A_BusinessPartner('1001726')/to_BusinessPartnerRole" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BusinessPartnerRole" type="application/atom+xml;type=feed" title="to_BusinessPartnerRole"/><link href="A_BusinessPartner('1001726')/to_BusinessPartnerTax" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_BusinessPartnerTax" type="application/atom+xml;type=feed" title="to_BusinessPartnerTax"/><link href="A_BusinessPartner('1001726')/to_Customer" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_Customer" type="application/atom+xml;type=entry" title="to_Customer"/><link href="A_BusinessPartner('1001726')/to_Supplier" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/to_Supplier" type="application/atom+xml;type=entry" title="to_Supplier"/><content type="application/xml"><m:properties><d:BusinessPartner>1001726</d:BusinessPartner><d:Customer/><d:Supplier/><d:AcademicTitle/><d:AuthorizationGroup/><d:BusinessPartnerCategory>1</d:BusinessPartnerCategory><d:BusinessPartnerFullName>Bob Smith</d:BusinessPartnerFullName><d:BusinessPartnerGrouping>BP02</d:BusinessPartnerGrouping><d:BusinessPartnerName>Bob Smith</d:BusinessPartnerName><d:BusinessPartnerUUID>000d3a44-dfa1-1edf-8cde-ca71a016bc82</d:BusinessPartnerUUID><d:CorrespondenceLanguage/><d:CreatedByUser>USER03</d:CreatedByUser><d:CreationDate>2024-06-25T00:00:00</d:CreationDate><d:CreationTime>PT13H25M01S</d:CreationTime><d:FirstName>Bob</d:FirstName><d:FormOfAddress/><d:Industry/><d:InternationalLocationNumber1>0</d:InternationalLocationNumber1><d:InternationalLocationNumber2>0</d:InternationalLocationNumber2><d:IsFemale>false</d:IsFemale><d:IsMale>false</d:IsMale><d:IsNaturalPerson/><d:IsSexUnknown>true</d:IsSexUnknown><d:Language/><d:LastChangeDate m:null="true"/><d:LastChangeTime>PT00H00M00S</d:LastChangeTime><d:LastChangedByUser/><d:LastName>Smith</d:LastName><d:LegalForm/><d:OrganizationBPName1/><d:OrganizationBPName2/><d:OrganizationBPName3/><d:OrganizationBPName4/><d:OrganizationFoundationDate m:null="true"/><d:OrganizationLiquidationDate m:null="true"/><d:SearchTerm1/><d:AdditionalLastName/><d:BirthDate m:null="true"/><d:BusinessPartnerIsBlocked>false</d:BusinessPartnerIsBlocked><d:BusinessPartnerType/><d:ETag>USER0320240625132501</d:ETag><d:GroupBusinessPartnerName1/><d:GroupBusinessPartnerName2/><d:IndependentAddressID/><d:InternationalLocationNumber3>0</d:InternationalLocationNumber3><d:MiddleName/><d:NameCountry/><d:NameFormat/><d:PersonFullName/><d:PersonNumber>29987</d:PersonNumber><d:IsMarkedForArchiving>false</d:IsMarkedForArchiving><d:BusinessPartnerIDByExtSystem/><d:TradingPartner/></m:properties></content></entry>
+      statusCode: 200 OK

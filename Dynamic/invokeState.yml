@@ -1,0 +1,37 @@
+schema: SimV1
+name: Invoke State
+
+connections:
+  - endpoint: http://localhost:14323
+    name: order service endpoint 
+    listen: false
+    
+
+services:
+  - name: Order Service Tests
+    steps:
+      - direction: Out
+        name: Create Order
+        to: order service endpoint
+        insert:
+          - type: Path
+            value: /create     
+      - direction: In
+        name: Create order verification
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+  
+  - name: Update Service Tests
+    steps:  
+      - direction: Out
+        name: Update Order States
+        to: order service endpoint
+        insert:
+          - type: Path
+            value: /update/ORDER ID     
+      - direction: In
+        name: Update order verification
+        verify:
+          - property: StatusCode
+            value: '200 OK'

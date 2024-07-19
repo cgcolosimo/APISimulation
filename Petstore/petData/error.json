@@ -1,0 +1,28 @@
+{
+    "status": "error",
+    "message": "Oops! The 'find by status' call didn't work. Looks like the pets are hiding!",
+    "simulatedResponse": {
+      "pets": [
+        {
+          "id": 1,
+          "name": "Mr. Whiskers",
+          "status": "hiding",
+          "note": "Currently hiding under the couch."
+        },
+        {
+          "id": 2,
+          "name": "Buddy",
+          "status": "incognito",
+          "note": "Disguised as a pillow on the sofa."
+        },
+        {
+          "id": 3,
+          "name": "Goldie",
+          "status": "AWOL",
+          "note": "Blending in with the goldfish decor."
+        }
+      ]
+    },
+    "hint": "Try again later or offer some treats!",
+    "haveANiceDay": true
+  }

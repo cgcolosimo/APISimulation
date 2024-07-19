@@ -1,0 +1,12 @@
+schema: SimV1
+name: Sock Shop Router
+connections:
+- authentication: None
+  endpoint: 28282
+  forward:
+    mode: SimulateFirst
+    to: realSocksapp
+  name: WebShopListener
+- endpoint: https://demowebshop.tricentis.com/
+  listen: false
+  name: realWebShopApp

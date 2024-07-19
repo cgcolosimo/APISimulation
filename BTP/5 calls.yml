@@ -1,0 +1,122 @@
+schema: SimV1
+connections:
+- authentication: None
+  endpoint: 20222
+  name: 5callscon
+- endpoint: https://tri-dev-sandbox.test.apimanagement.us10.hana.ondemand.com:443/deck
+  listen: false
+  name: 5callsendpoint
+services:
+- name: 5 calls Test
+  steps:
+  - direction: Out
+    name: Request 1
+    to: 5callsendpoint
+  - direction: In
+    name: Response 1
+    verify:
+    - property: StatusCode
+      value: 200 OK
+  - direction: Out
+    name: Request 2
+    to: 5callsendpoint
+  - direction: In
+    name: Response 2
+    verify:
+    - property: StatusCode
+      value: 200 OK
+  - direction: Out
+    name: Request 3
+    to: 5callsendpoint
+  - direction: In
+    name: Response 3
+    verify:
+    - property: StatusCode
+      value: 200 OK
+  - direction: Out
+    name: Request 4
+    to: 5callsendpoint
+  - direction: In
+    name: Response 4
+    verify:
+    - property: StatusCode
+      value: 200 OK
+  - direction: Out
+    name: Request 5
+    to: 5callsendpoint
+  - direction: In
+    name: Response 5
+    verify:
+    - property: StatusCode
+      value: 200 OK
+  - direction: Out
+    name: Request 6
+    to: 5callsendpoint
+  - direction: In
+    name: Response 6
+    verify:
+    - property: StatusCode
+      value: 200 OK
+- name: 5 calls Mock
+  steps:
+  - direction: In
+    name: Request 1
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        Call 1
+    name: Response 1
+  - direction: In
+    name: Request 2
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        Call 2
+    name: Response 2
+  - direction: In
+    name: Request 3
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        Call 3
+    name: Response 3
+  - direction: In
+    name: Request 4
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        Call 4
+    name: Response 4
+  - direction: In
+    name: Request 5
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        Call 5
+    name: Response 5
+  - direction: In
+    name: Request 6
+    trigger:
+    - type: Path
+      value: /5calls/
+  - direction: Out
+    message:
+      payload: |-
+        No Response (999 Call Rate Exceeded)
+      statusCode: 999 Call Rate Exceeded
+    name: Response 6

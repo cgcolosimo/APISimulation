@@ -1,0 +1,72 @@
+schema: SimV1
+
+# Passes if morning fails at night
+
+connections:
+  - name: offatnightcon
+    port: 20223
+  - name: offatnightendpoint
+    endpoint: http://localhost:20223/faketime
+    listen: false
+
+services:
+  - name: good morning
+    steps:
+    - name: Request 1
+      direction: Out
+      to: offatnightendpoint
+      message:
+          headers:
+            - key : fakeTime
+              value: '08:00:00 GMT'
+    - name: Response 1
+      verify:
+        - property: StatusCode
+          value: '200 OK'
+  
+  - name: good night
+    steps:
+    - name: Request 2
+      direction: Out
+      to: offatnightendpoint
+      message:
+          headers:
+            - key : fakeTime
+              value: '20:00:00 GMT'
+    - name: Response 2
+      verify:
+        - property: StatusCode
+          value: '200 OK'
+
+
+# Simulation
+  - name: timeCheckPositiveSim
+    steps:
+    - name: Morning Time
+      trigger:
+        - type: Path
+          value: '/faketime'
+        - type: Header
+          key: fakeTime
+          dataType: Date
+          operator: LessOrEqual
+          value: 12:00:00 GMT
+    - name: Morning Time Response
+      message:
+        payload: Good Moning
+  
+  - name: timeCheckNegativeSim
+    steps:
+    - name: Eventing Time
+      trigger:
+        - type: Path
+          value: '/faketime'
+        - type: Header
+          key: fakeTime
+          dataType: Date
+          operator: GreaterOrEqual
+          value: 12:00:00 GMT
+    - name: Eventing Time Response
+      message:
+        payload: Good Evening
+        statusCode: 500 Sleeping

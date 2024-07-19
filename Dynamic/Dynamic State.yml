@@ -1,0 +1,57 @@
+schema: SimV1
+name: Dynamic State
+
+connections:
+  - name: order listener
+    port: 14323
+
+
+services:
+  - name: Virtual Order Service
+    steps:
+      - direction: In
+        name: Create Order Request
+        trigger:
+          - uri: /create
+        buffer:
+          - name: id
+            value: "{RND[10]}"
+
+      - direction: Out
+        name: Create Order Response
+        insert:
+          - value: Thank you for creating an Order! Your Order ID is {B[id]}
+        message:
+          headers:
+            - key: simulated
+              value: true
+        
+       
+
+
+      - direction: In
+        name: Initiate Shipping
+        trigger:
+          - uri: /update/{B[id]}        
+      - direction: Out
+        name: Shipping Response
+        insert:
+          - value: Shipping status initiated for order {B[id]}! State 2/4
+      
+      - direction: In
+        name: Payment Service
+        trigger:
+          - uri: /update/{B[id]}
+      - direction: Out
+        name: Payment Response
+        insert:
+          - value: Payment status updated for order {B[id]}! State 3/4
+      
+      - direction: In
+        name: Final Status Update Request
+        trigger:
+          - uri: /update/{B[id]}
+      - direction: Out
+        name: Final Status Update Response
+        insert:
+          - value: Your order {B[id]} has been completed! State 4/4

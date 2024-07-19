@@ -1,0 +1,220 @@
+schema: SimV1
+name: Users Table
+
+connections: 
+- name: UserService
+  endpoint: http://localhost:10090
+  type: Http 
+  listen: true
+
+templates:
+  messages:
+    - name: defaultSuccess
+      encoding: UTF-8
+      statusCode: 200 OK
+      payload: Success
+
+resources:
+  - name: users
+    type: Table
+    file: ../users/users.csv
+    #properties: [id, name, sfdc_username, sfdc_password, sfdc_clientid, sfdc_secret, sfdc_securitytoken, sfdc_apiendpoint, date_created]
+    listSeparator: ","
+
+services:
+- name: insertService
+  description: Insert a new record in the users Resource
+  steps:
+    - name: Insert Service Request
+      direction: In
+      trigger:
+      - type: Path
+        value: /user
+      - property: Method
+        value: POST
+      buffer:
+        - jsonPath: id
+          name: id
+        - jsonPath: name
+          name: name
+        - jsonPath: sfdc_username
+          name: sfdc_username
+        - jsonPath: sfdc_password
+          name: sfdc_password
+        - jsonPath: sfdc_clientid
+          name: sfdc_clientid
+        - jsonPath: sfdc_secret
+          name: sfdc_secret
+        - jsonPath: sfdc_securitytoken
+          name: sfdc_securitytoken
+        - jsonPath: sfdc_apiendpoint
+          name: sfdc_apiendpoint
+    #- name: Insert to Resource
+    - resource:
+        insert:
+          - ref: users
+            value:
+              [
+                "{b[id]}",
+                "{b[name]}",
+                "{b[sfdc_username]}",
+                "{b[sfdc_password]}",
+                "{b[sfdc_clientid]}",
+                "{b[sfdc_secret]}",
+                "{b[sfdc_securitytoken]}",
+                "{b[sfdc_apiendpoint]}",
+                "{DATE}"
+              ]
+      message:
+        basedOn: defaultSuccess
+
+- name: readSingleService
+  description: Fetch a single record from the users Resource
+  steps:
+    - name: Single User Fetch Request
+      trigger:
+        - type: Path
+          value: "/user/*"
+        - property: Method
+          value: GET
+      buffer:
+        - type: Path
+          value: "user/{xb[id]}"
+    - name: Fetch from Resource
+      resource:
+        read:
+          - ref: users
+            name: result
+            where: "id == '{b[id]}'"
+      message:
+        basedOn: defaultSuccess
+        payload: |-
+          {
+            "id": 0,
+            "name": "",
+            "sfdc_username": "",
+            "sfdc_password": "",
+            "sfdc_secret": "",
+            "sfdc_clientid": "",
+            "sfdc_securitytoken": "",
+            "sfdc_apiendpoint": "",
+            "date_created": ""
+          }
+      insert:
+        - jsonPath: id
+          value: "{b[result.id]}"
+        - jsonPath: name
+          value: "{b[result.name]}"
+        - jsonPath: sfdc_username
+          value: "{b[result.sfdc_username]}"
+        - jsonPath: sfdc_password
+          value: "{b[result.sfdc_password]}"
+        - jsonPath: sfdc_secret
+          value: "{b[result.sfdc_secret]}"
+        - jsonPath: sfdc_clientid
+          value: "{b[result.sfdc_clientid]}"
+        - jsonPath: sfdc_securitytoken
+          value: "{b[result.sfdc_securitytoken]}"
+        - jsonPath: sfdc_apiendpoint
+          value: "{b[result.sfdc_apiendpoint]}"
+        - jsonPath: date_created
+          value: "{b[result.date_created]}"
+
+-  name: readListService
+   description: Fetch all records from the Resource
+   steps:
+    - name: All users Fetch Request
+      trigger:
+        - type: Path
+          value: /user
+        - property: Method
+          value: GET
+    - name: Fetch all users from the Resource
+      resource:
+        read:
+          - ref: users
+            name: results
+            template: |-
+              {
+                %{results.id},
+                %{results.sfdc_username},
+                %{results.sfdc_clientid},
+                %{results.date_created}
+              }
+      insert:
+        - type: Header
+          key: content-type
+          value: text/plain
+        - value: '"{orders:["{b[results]}"]}"'
+
+- name: updateService
+  description: Update a record in the resource
+  steps:
+    - name: Update Record Request
+      trigger:
+        - type: Path
+          value: "/user/*"
+        - property: Method
+          value: PUT
+      buffer:
+        - type: Path
+          value: "user/{xb[id]}"
+        - jsonPath: sfdc_password
+          name: sfdc_password
+        - jsonPath: sfdc_clientid
+          name: sfdc_clientid
+        - jsonPath: sfdc_secret
+          name: sfdc_secret
+        - jsonPath: sfdc_securitytoken
+          name: sfdc_securitytoken
+        - jsonPath: sfdc_apiendpoint
+          name: sfdc_apiendpoint
+    - name: Update Record in Resource
+      resource:
+        update:
+          - ref: users
+            where: "id == '{b[id]}'"
+            value:
+              sfdc_password: "{b[sfdc_password]}"
+              sfdc_clientid: "{b[sfdc_clientid]}"
+              sfdc_secret: "{b[sfdc_secret]}"
+              sfdc_securitytoken: "{b[sfdc_securitytoken]}"
+              sfdc_apiendpoint: "{b[sfdc_apiendpoint]}"
+      message:
+        basedOn: defaultSuccess
+
+- name: deleteService
+  description: Delete a single record from the Resource
+  steps:
+    - name: Single User Delete
+      trigger:
+        - type: Path
+          value: "/user/*"
+        - property: Method
+          value: DELETE
+      buffer:
+        - type: Path
+          value: "user/{xb[id]}"
+    - name: Delete user from Resource
+      resource:
+        delete:
+          - ref: users
+            where: "id == '{b[id]}'"
+      message:
+        basedOn: defaultSuccess
+
+- name: deleteAllService
+  description: Delete all records from the users Resource
+  steps:
+    - name: Delete Users Request
+      trigger:
+        - type: Path
+          value: "/user"
+        - property: Method
+          value: DELETE
+    - name: Delete all from Resource
+      resource:
+        delete:
+          - ref: users
+      message:
+        basedOn: defaultSuccess

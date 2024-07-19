@@ -1,0 +1,72 @@
+schema: SimV1
+
+# Passes from one IP but not from another
+
+connections:
+  - name: origincon
+    port: 20224
+  - name: originendpoint
+    endpoint: http://localhost:20224/origin
+    listen: false
+
+services:
+  - name: good IP
+    steps:
+    - name: Request 1
+      direction: Out
+      to: originendpoint
+      message:
+          headers:
+            - key : origin
+              value: 'http://mygoodhost:20224'
+    - name: Response 1
+      verify:
+        - property: StatusCode
+          value: '200 OK'
+  
+  - name: bad IP
+    steps:
+    - name: Request 2
+      direction: Out
+      to: originendpoint
+      message:
+          headers:
+            - key : origin
+              value: 'http://mybadhost:20224'
+    - name: Response 2
+      verify:
+        - property: StatusCode
+          value: '200 OK'
+
+
+# Simulation
+  - name: originPositiveSim
+    steps:
+    - name: Good Origin
+      trigger:
+        - type: Path
+          value: '/origin'
+        - type: Header
+          key: origin
+          operator: Equal
+          dataType: String
+          value: http://mygoodhost:20224
+    - name: Positive Origin Response
+      message:
+        payload: Good Moning
+  
+  - name: originNegativeSim
+    steps:
+    - name: Negative Origin Request
+      trigger:
+        - type: Path
+          value: '/origin'
+        - type: Header
+          key: origin
+          dataType: String
+          operator: NotEqual
+          value: http://mygoodhost:20224
+    - name: Negative Origin Response
+      message:
+        payload: Good Evening
+        statusCode: 500 I dont know you

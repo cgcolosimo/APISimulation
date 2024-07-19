@@ -1,0 +1,9 @@
+schema: SimV1
+name: triservelistener
+connections:
+- capture: false
+  name: TriServe CRM Listener
+  port: 14346
+- endpoint: http://localhost:51003/carservice
+  listen: false
+  name: Real CRM Get

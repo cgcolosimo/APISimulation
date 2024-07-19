@@ -1,0 +1,60 @@
+schema: SimV1
+
+connections:
+  - name: fwdIfVirtual
+    port: 11337
+    forward:
+      to: realcats
+      simulateOn:
+        trigger:
+          - type: Header
+            key: simulate
+            value: true
+  - name: realcats
+    endpoint: https://catfact.ninja/fact
+    listen: false
+
+  - name: cattractConnection
+    listen: false
+    endpoint: localhost:11337
+        
+
+services:
+  - name: Virtual Cats
+    steps:
+    - name: Request
+    - name: Response
+      message:
+          payload: '{fact: "Hey, You got a VIRTUAL cat.", length: 9000}'
+
+  - name: cattractTest
+    steps:
+    - name: Send Cat Call
+      direction: Out
+      to: cattractConnection
+      message:
+        method: GET
+        payload: ''
+        headers: 
+    - name: Recieve Cat Response
+      direction: In
+      verify:
+          - property: StatusCode
+            value: '200 OK'
+
+  - name: cattractTestFWD
+    steps:
+    - name: Send Cat Call with Special header
+      direction: Out
+      to: cattractConnection
+      message:
+        method: GET
+        payload: ''
+        headers: 
+          - key: simulate
+            value: true
+    - name: Recieve Virtual Cat Response
+      direction: In
+      verify:
+          - property: StatusCode
+            value: '200 OK'

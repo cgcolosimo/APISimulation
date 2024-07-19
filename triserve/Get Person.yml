@@ -1,0 +1,127 @@
+schema: SimV1
+
+services:
+- name: Jon Snow response
+  steps:
+  - name: DemoApp Get Person Service (Jon Snow) Request
+    direction: In
+    from: TriServe CRM Listener
+    message:
+      method: POST
+    trigger:
+    - type: Path
+      value: /crmservice
+    - property: Method
+      value: POST
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPerson']/*[local-name()='firstName']
+      value: jon
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPerson']/*[local-name()='lastName']
+      value: snow
+  - name: DemoApp Get Person Service (Jon Snow) Response
+    direction: Out
+    counter: 0
+    message:
+      method: POST
+      statusCode: 200 OK
+      headers:
+        - key: Content-Type
+          value: 'text/xml; charset=utf-8'
+      payload: >-
+        <?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <soap:Body>
+            <GetPersonResponse xmlns="http://tempuri.org/">
+              <GetPersonResult>
+                <Insurant>
+                  <FirstName>Jon</FirstName>
+                  <LastName>Snow</LastName>
+                  <DateOfBirth>10/10/1970</DateOfBirth>
+                  <Gender>Male</Gender>
+                  <StreetAddress>10 Cold Street</StreetAddress>
+                  <City>Winterfell</City>
+                  <ZipCode>12345</ZipCode>
+                  <Country>Belgium</Country>
+                  <Occupation>Employee</Occupation>
+                </Insurant>
+              </GetPersonResult>
+            </GetPersonResponse>
+          </soap:Body>
+        </soap:Envelope>
+    insert:
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPersonResponse']/*[local-name()='GetPersonResult']/*[local-name()='Insurant']/*[local-name()='StreetAddress']
+      value: 99999999999999999 &*^(*) Cold Street
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPersonResponse']/*[local-name()='GetPersonResult']/*[local-name()='Insurant']/*[local-name()='City']
+      value: Winterfell
+
+- name: Catchall response
+  steps:
+  - name: DemoApp Get Person Service (Max All) Request
+    direction: In
+    from: TriServe CRM Listener
+    message:
+      method: POST
+    trigger:
+    - type: Path
+      value: /crmservice
+    - property: Method
+      value: POST
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPerson']/*[local-name()='firstName']
+      value: max
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPerson']/*[local-name()='lastName']
+      value: '*'
+  - name: DemoApp Get Person Service (Max All) Response
+    direction: Out
+    counter: 0
+    message:
+      method: POST
+      statusCode: 200 OK
+      headers:
+        - key: Content-Type
+          value: 'text/xml; charset=utf-8'
+      payload: >-
+        <?xml version="1.0" encoding="utf-8"?>
+
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+          <soap:Body>
+
+            <GetPersonResponse xmlns="http://tempuri.org/">
+
+              <GetPersonResult>
+
+                <Insurant>
+
+                  <FirstName>Max</FirstName>
+
+                  <LastName>Mustermann</LastName>
+
+                  <DateOfBirth>10/10/1970</DateOfBirth>
+
+                  <Gender>Male</Gender>
+
+                  <StreetAddress>10 Cold Street</StreetAddress>
+
+                  <City>Winterfell</City>
+
+                  <ZipCode>12345</ZipCode>
+
+                  <Country>Belgium</Country>
+
+                  <Occupation>Employee</Occupation>
+
+                </Insurant>
+
+              </GetPersonResult>
+
+            </GetPersonResponse>
+
+          </soap:Body>
+
+        </soap:Envelope>
+    insert:
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPersonResponse']/*[local-name()='GetPersonResult']/*[local-name()='Insurant']/*[local-name()='StreetAddress']
+      value: Simulation Rules
+    - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='GetPersonResponse']/*[local-name()='GetPersonResult']/*[local-name()='Insurant']/*[local-name()='City']
+      value: Catchall
+    - property: Delay
+      value: 1000

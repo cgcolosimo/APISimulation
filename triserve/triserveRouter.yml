@@ -1,0 +1,9 @@
+schema: SimV1
+name: Triserve Router
+connections:
+- authentication: None
+  endpoint: 18182
+  name: Triserve Listener
+- endpoint: http://localhost:55000/SampleApp/
+  listen: false
+  name: realTriserve

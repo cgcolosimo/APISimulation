@@ -1,0 +1,16 @@
+schema: SimV1
+name: default
+
+connections:
+  - name: hello
+    port: 17071
+
+services:
+
+  - steps:
+      - direction: In
+        trigger:
+          - uri: '*'
+      - direction: Out
+        message:
+          payload: Hello world!

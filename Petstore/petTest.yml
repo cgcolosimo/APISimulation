@@ -1,0 +1,64 @@
+schema: SimV1
+
+connections:
+  - name: petEndpoint
+    endpoint: http://localhost:23432
+    listen: false
+
+services:
+  - name: Add Pet Test
+    steps:
+      - direction: Out
+        name: Add pet test request
+        to: petEndpoint
+        message:
+          method: POST
+          payload: |
+                    {
+                      "id": 0,
+                      "category": {
+                        "id": 0,
+                        "name": "string"
+                      },
+                      "name": "tiger",
+                      "photoUrls": [
+                        "string"
+                      ],
+                      "tags": [
+                        {
+                          "id": 0,
+                          "name": "string"
+                        }
+                      ],
+                      "status": "available"
+                    }
+        insert:
+          - type: Path
+            value: /v2/pet
+      - direction: In
+        name: Add pet test response
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'
+  
+
+
+  - name: Find Pet by Status Test
+    steps:
+      - direction: Out
+        name: Find pet test request
+        to: petEndpoint
+        message:
+          method: GET  
+        insert:
+          - type: Path
+            value: /v2/pet/findByStatus?status=available
+      - direction: In
+        name: Find pet test response
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'

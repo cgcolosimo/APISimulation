@@ -1,0 +1,94 @@
+schema: SimV1
+name: Mock WebHook Test
+
+connections:
+  - name: serviceWebhook
+    port: 17073
+
+services:
+
+  - name: Send Webhook Registration
+    steps:
+      - direction: Out
+        connection:
+          uri: http://localhost:17073/registerWebhook
+        message:
+          method: POST
+          payload: >-
+            { 
+              "replyAddress": "http://localhost:17073/networkMessage", 
+              "eventName": "doStuff"
+            }
+      - direction: In
+        verify:
+        - property: StatusCode
+          value: 200 OK
+
+  - name: Sink Webhook Messages
+    steps:
+      - direction: In
+        name: Webhook Message
+        trigger:
+        - type: Path
+          value: /networkMessage
+        verify:
+        - jsonPath: msg
+          value: "First Response"
+
+
+
+
+  - name: Process Registration and Message Emit
+    steps:
+      - direction: In
+        from: serviceWebhook
+        trigger:
+        - type: Path
+          value: /registerWebhook
+        buffer:
+          - jsonPath: replyAddress
+            name: webhookName
+          - jsonPath: eventName
+            name: eventName
+      - direction: Out
+        message:
+          statusCode: 200 OK
+          payload: >-
+            { 
+              "msg": "Client registered",
+              "clientAddress": "placeholder"
+            }
+        insert:
+          - jsonPath: clientAddress
+            value: "{B[webhookName]}"
+      - direction: Out
+        name: Message 1
+        connection:
+          endpoint: "http://localhost:17073/networkMessage"
+        message:
+          delay: 1000
+          payload: >-
+            {
+              "msg": "First Response"
+            }
+      - direction: Out
+        name: Message 2
+        connection:
+          endpoint: "http://localhost:17073/networkMessage"
+        message:
+          delay: 3000
+          payload: >-
+            {
+              "msg": "Second Response"
+            }
+      - direction: Out
+        name: Message 3
+        connection:
+          endpoint: "http://localhost:17073/networkMessage"
+        message:
+          delay: 5000
+          payload: >-
+            {
+              "msg": "Third Response"
+            }
+      

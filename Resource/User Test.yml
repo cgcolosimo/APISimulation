@@ -1,0 +1,25 @@
+schema: SimV1
+connections:
+  - name: UserEndpoint
+    listen: false
+    endpoint: localhost:10090/user
+services:
+  - name: User Service
+    steps:
+      - direction: Out
+        to: UserEndpoint
+        message:
+          method: GET
+          headers: []
+          payload: "{\r\n  \"id\": 2, \r\n  \"name\": \"Chris Colosimo\", \r\n  \"sfdc_username\": \"c.colosimo@tricentis.com\", \r\n  \"sfdc_password\": \"mypassword\", \r\n  \"sfdc_clientid\": \"123akjsdgfkajsfkasgfbsakjfb\", \r\n  \"sfdc_secret\": \"akgfkjasdfkjagsdf\", \r\n  \"sfdc_securitytoken\": \"1234672349821734894216\", \r\n  \"sfdc_apiendpoint\": \"na212\"\r\n}"
+      - direction: In
+        message:
+          headers:
+            - key: Date
+              value: Wed, 26 Jul 2023 22:32:30 GMT
+            - key: Server
+              value: Kestrel
+            - key: Content-Length
+              value: '308'
+            - key: Content-Type
+              value: text/plain

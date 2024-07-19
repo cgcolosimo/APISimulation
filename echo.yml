@@ -1,0 +1,17 @@
+schema: SimV1
+name: default
+
+connections:
+  - name: echo
+    port: 17074
+
+services:
+
+  - name: echo
+    steps:
+    - name: request
+      buffer:
+        - name: request
+    - name: response
+      insert:
+        - value: 'Response from echo: {B[request]}'

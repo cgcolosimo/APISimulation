@@ -1,0 +1,28 @@
+schema: SimV1
+
+connections:
+  - name: http
+
+services:
+  - name: multipleQueryParam
+    steps:
+    - name: Request
+      direction: Out
+      to: echo
+      insert:
+        #- uri: /fdt/auskunft/rest/fachdatentypen?typIds=400272&werteliste=true&sprachen=de%2cfr%2cit
+        #- uri: /fdt/auskunft/rest/fachdatentypen
+        - type: Path
+          value: /fdt/auskunft/rest/fachdatentypen
+        - type: Query
+          key: typIds
+          value: 400272
+        - type: Query
+          key: werteliste
+          value: true
+        - type: Query
+          key: sprachen
+          value: de,fr,it
+
+    - name: Response
+      direction: In

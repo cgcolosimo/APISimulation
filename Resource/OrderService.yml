@@ -1,0 +1,17 @@
+schema: SimV1
+connections:
+  - name: orderAI
+    listen: false
+    endpoint: http://localhost:1900/order
+services:
+  - name: OrderService
+    steps:
+      - direction: Out
+        to: orderAI
+        message:
+          method: POST
+          headers: []
+          payload: "{\r\n  \"customerId\":\"askldjij239\",\r\n  \"productId\":\"ewhih33\",\r\n  \"productPrice\":2500,\r\n  \"amount\":3\r\n}"
+      - direction: In
+        message:
+          headers: []

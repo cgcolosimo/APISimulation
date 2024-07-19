@@ -1,0 +1,39 @@
+schema: SimV1
+
+connections:
+  - name: aiEndpoint
+    capture: false
+    create: false
+    endpoint: https://eastus-openai-devtest.openai.azure.com/openai/deployments/gpt4o/chat/completions?api-version=2024-04-01-preview
+    keepProcessed: false
+    listen: false
+
+services:
+- name: Completion AI request
+  steps:
+  - name: AI test request
+    to: aiEndpoint
+    direction: Out
+    insert: []
+    message:
+      headers:
+      - key: api-key
+        value: 85b3b2b4b0c8452c93a6faf6d9421f7a
+      - key: Content-Type
+        value: application/json
+      method: POST
+      payload: |-
+        {
+           "model": "gpt-4o",
+           "messages": [{"role": "user", "content": "Say hello world"}],
+           "temperature": 0.7
+         }
+
+  - direction: In
+    insert: []
+    name: AI test response
+    verify:
+    - property: StatusCode
+      value: 200 OK
+    - property: Delay
+      value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'

@@ -1,0 +1,20 @@
+schema: SimV1
+name: default
+
+connections:
+  - name: filecatcon
+    port: 21111
+
+services:
+
+  - steps:
+      - direction: In
+        trigger:
+            - type: Path
+              value: 'filecat'
+      - direction: Out
+        message:
+          headers:
+            - key : Content-Type
+              value: 'application/pdf'
+          payloadFile: "cat.pdf"
