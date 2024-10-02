@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 6,
+    "pageSize": 96,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5066",
+            "quoteId": "867425528",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "ottilie.ortiz@toscademo.com",
+            "contact_sfdcId": "0031U000026r52QQAQ",
+            "account_sfdcId": "0011U000029gjV8QAI",
+            "opp_sfdcId": "0061U00000RXko1QAD",
+            "firstName": "Ottilie",
+            "lastName": "Ortiz",
+            "phone": "4399192864",
+            "address": "8319 Kessler Gateway",
+            "city": "Nienowmouth",
+            "zip": "63067"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

@@ -1,0 +1,11 @@
+schema: SimV1
+name: triservelistener
+connections:
+- forward:
+    mode: Learning
+    to: Real CRM Get
+  name: TriServe CRM Listener
+  port: 14346
+- endpoint: http://localhost:51003/crmservice
+  listen: false
+  name: Real CRM Get

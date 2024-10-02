@@ -1,0 +1,380 @@
+schema: SimV1
+name: CharterUseCase1service
+connections:
+- endpoint: http://localhost:5555/soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+  listen: false
+  name: Charter SIM Connection
+services:
+- description: Test to add an account and persist account number and transId.
+  name: 1. AddAccount Test
+  steps:
+  - direction: Out
+    message:
+      headers:
+      - key: SOAP Action
+        value: AddAccount
+      - key: Content-Type
+        value: text/xml
+      method: POST
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <soapenv:Envelope xmlns:get="http://www.twcable.com/CoreServices/acn/GetAccountServices" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <soapenv:Header>
+          <wsse:Security
+          soapenv:mustUnderstand="1"
+          xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+          <wsse:UsernameToken>
+            <wsse:Username>rmg</wsse:Username>
+            <wsse:Password>xxxxx</wsse:Password>
+          </wsse:UsernameToken>
+          </wsse:Security>
+        </soapenv:Header>
+        <soapenv:Body>
+          <ns1:webapiWFRequest
+          accountAction="" accountType="" action="AddAccount" biller=""
+          billerAccountId="" billingOrderId="" callbackLocation=""
+          clecAccount="" correlationId="" dataCenter="" hsdSuspend=""
+          instanceId="" legacyCompany="" lineOfBusiness="" mode="synchronous"
+          orderIntent="" respQueueName="" respQueueProviderUrl=""
+          routingLevelFour="" routingLevelOne="" routingLevelThree=""
+          routingLevelTwo="" soloAccountId="" soloOrderId="" spcDivisionId=""
+          transactionId="" txRoot="" uuid="18212DE8.0174BC2440E0.E05B69A"
+          videoPresent="" videoSuspend="" voiceSuspend=""
+          xmlns:ns1="http://www.twc.com/BPS/wf/WebService"
+            xmlns:oracle-xsl-mapper="http://www.oracle.com/xsl/mapper/schemas">
+          <ns2:webapiRequest
+            action="AddAccount" clientId="OSM"
+            transId="8da6954b-9dbd-4409-9fdf-62211b1eea57"
+              xmlns:ns2="http://www.twc.com/BPS/WebService">
+            <ns2:arguments>
+            <ns2:arg
+              name="accountNumber" value="8347100016445861"/>
+            <ns2:arg
+              name="siteCode" value="LNK"/>
+            <ns2:arg name="emailDomain"
+              value="qa02charter.com"/>
+            <ns2:object
+              name="Account">
+              <ns2:prop name="firstName"
+              value="TEST"/>
+              <ns2:prop name="lastName"
+              value="TEST"/>
+              <ns2:prop name="contactPhoneNumber"
+              value=""/>
+              <ns2:prop name="status"
+              value="enabled"/>
+              <ns2:object
+                name="Address">
+              <ns2:prop name="addrLine1"
+                value="2397 INDEPENDENCE DR"/>
+              <ns2:prop name="addrLine2"
+                value="QA05"/>
+              <ns2:prop name="addrCity"
+                value="LINCOLN"/>
+              <ns2:prop name="addrState"
+                value="NE"/>
+              <ns2:prop name="addrZip" value="685211172"/>
+              </ns2:object>
+            </ns2:object>
+            </ns2:arguments>
+          </ns2:webapiRequest>
+          </ns1:webapiWFRequest>
+        </soapenv:Body>
+        </soapenv:Envelope>
+    name: CaptureAccountDetailsTestRequest
+    to: Charter SIM Connection
+  - direction: In
+    name: CaptureAccountDetailsTestResponse
+- description: Test to update CM features and map data to account number.
+  name: 2. UpdateFeatures CM MAC Test
+  steps:
+  - direction: Out
+    message:
+      headers:
+      - key: SOAP Action
+        value: UpdateFeatures
+      - key: Content-Type
+        value: text/xml
+      method: POST
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <soapenv:Envelope
+        xmlns:get="http://www.twcable.com/CoreServices/acn/GetAccountServices"
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <soapenv:Header>
+          <wsse:Security
+          soapenv:mustUnderstand="1"
+          xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+          <wsse:UsernameToken>
+            <wsse:Username>rmg</wsse:Username>
+            <wsse:Password>srsaasd</wsse:Password>
+          </wsse:UsernameToken>
+          </wsse:Security>
+        </soapenv:Header>
+        <soapenv:Body>
+          <ns1:webapiWFRequest
+          accountAction="" accountType="" action="UpdateFeatures" biller=""
+          billerAccountId="" billingOrderId="" callbackLocation=""
+          clecAccount="" correlationId="" dataCenter="" hsdSuspend=""
+          instanceId="" legacyCompany="" lineOfBusiness="" mode="synchronous"
+          orderIntent="" respQueueName="" respQueueProviderUrl=""
+          routingLevelFour="" routingLevelOne="" routingLevelThree=""
+          routingLevelTwo="" soloAccountId="" soloOrderId="" spcDivisionId=""
+          transactionId="" txRoot="" uuid="18212DE6.0174BC274344.41A9FF8"
+          videoPresent="" videoSuspend="" voiceSuspend=""
+          xmlns:ns1="http://www.twc.com/BPS/wf/WebService"
+            xmlns:oracle-xsl-mapper="http://www.oracle.com/xsl/mapper/schemas">
+          <ns2:webapiRequest
+            action="UpdateFeatures" clientId="OSM"
+            transId="c033c940-fdc7-11ea-a338-23c0c9321808"
+              xmlns:ns2="http://www.twc.com/BPS/WebService">
+            <ns2:arguments>
+            <ns2:arg
+              name="accountNumber" value="8347100016445861"/>
+            <ns2:arg
+              name="siteCode" value="LNK"/>
+            <ns2:object
+              name="Service">
+              <ns2:prop name="macAddress"
+              value="CE1000076255"/>
+              <ns2:prop name="status"
+              value="enabled"/>
+              <ns2:prop name="serviceCodes" value="A007,BW141,BW145,BW157,COS56,IP1,ISRR,BW001,IP0,ISRR,VIP1,CM"/>
+            </ns2:object>
+            </ns2:arguments>
+          </ns2:webapiRequest>
+          </ns1:webapiWFRequest>
+        </soapenv:Body>
+        </soapenv:Envelope>
+    name: CaptureUpdateDetailsTestRequest
+    to: Charter SIM Connection
+  - direction: In
+    name: CaptureUpdateDetailsTestResponse
+- description: Test to update MAC features and map data to account number.
+  name: 3. Update MTA MAC Test
+  steps:
+  - direction: Out
+    message:
+      headers:
+      - key: SOAP Action
+        value: UpdateFeatures
+      - key: Content-Type
+        value: text/xml
+      method: POST
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <soapenv:Envelope
+        xmlns:get="http://www.twcable.com/CoreServices/acn/GetAccountServices"
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <soapenv:Header>
+          <wsse:Security
+          soapenv:mustUnderstand="1"
+          xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+          <wsse:UsernameToken>
+            <wsse:Username>rmg</wsse:Username>
+            <wsse:Password>srsaasd</wsse:Password>
+          </wsse:UsernameToken>
+          </wsse:Security>
+        </soapenv:Header>
+        <soapenv:Body>
+          <ns:request
+          xmlns:ns="http://www.twc.com/BPS/sWebAPI"
+            xmlns:webapi="http://www.twc.com/BPS/WebService">
+          <ns2:webapiRequest
+            action="UpdateFeatures" clientId="OSM"
+            transId="83471000164458614777221314"
+              xmlns:ns2="http://www.twc.com/BPS/WebService">
+            <ns2:arguments>
+            <ns2:arg
+              name="accountNumber" value="8347100016445861"/>
+            <ns2:arg
+              name="siteCode" value="LNK"/>
+            <ns2:object
+              name="Service">
+              <ns2:prop name="macAddress"
+              value="CE1000076256"/>
+              <ns2:prop name="status"
+              value="enabled"/>
+              <ns2:prop name="serviceCodes" value="BW001,IP0,ISRR,VIP1,MTA"/>
+            </ns2:object>
+            </ns2:arguments>
+          </ns2:webapiRequest>
+          </ns:request>
+        </soapenv:Body>
+        </soapenv:Envelope>
+    name: CaptureUpdateMTA MAC TestRequest
+    to: Charter SIM Connection
+  - direction: In
+    name: CaptureUpdateMTA MAC TestResponse
+- description: Service to get customer details based on TN, account number and transId.
+  name: 4. GetCustomerDetails TN Test
+  steps:
+  - direction: Out
+    message:
+      headers:
+      - key: SOAP Action
+        value: GetCustomerDetails
+      - key: Content-Type
+        value: text/xml
+      method: POST
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <SOAP-ENV:Envelope
+        SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <SOAP-ENV:Header>
+          <wsse:Security
+          SOAP-ENV:mustUnderstand="1"
+          xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+          <wsse:UsernameToken>
+            <wsse:Username>rmg</wsse:Username>
+            <wsse:Password>srsaasd</wsse:Password>
+          </wsse:UsernameToken>
+          </wsse:Security>
+        </SOAP-ENV:Header>
+        <SOAP-ENV:Body>
+          <request
+            xmlns="http://www.twc.com/BPS/sWebAPI">
+          <webapiRequest
+            action="GetCustomerDetails" clientId="rmg" transId="1691147355"
+              xmlns="http://www.twc.com/BPS/WebService">
+            <arguments>
+            <arg
+              name="serviceId" value="9136808989"/>
+            <arg
+              name="accountNumber" value="8347100016445861"/>
+            </arguments>
+          </webapiRequest>
+          </request>
+        </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+    name: TNCaptureCustomerDetailsTestRequest
+    to: Charter SIM Connection
+  - direction: In
+    name: TNCaptureCustomerDetailsTestResponse
+- description: Test From Incoming Request capture Account Number, transId . In response we need to send Incoming_transId.
+  name: '5.	Get Customer Details AccountNumber Test '
+  steps:
+  - direction: Out
+    message:
+      headers:
+      - key: SOAP Action
+        value: AddAccount
+      - key: Content-Type
+        value: text/xml
+      method: POST
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+          <soapenv:Envelope
+          xmlns:get="http://www.twcable.com/CoreServices/acn/GetAccountServices"
+          xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <soapenv:Header>
+            <wsse:Security
+            soapenv:mustUnderstand="1"
+            xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <wsse:UsernameToken>
+              <wsse:Username>rmg</wsse:Username>
+              <wsse:Password>srsaasd</wsse:Password>
+            </wsse:UsernameToken>
+            </wsse:Security>
+          </soapenv:Header>
+          <soapenv:Body>
+            <ns1:webapiWFRequest
+            accountAction="" accountType="" action="GetCustomerDetails" biller=""
+            billerAccountId="" billingOrderId="" callbackLocation=""
+            clecAccount="" correlationId="" dataCenter="" hsdSuspend=""
+            instanceId="" legacyCompany="" lineOfBusiness="" mode="synchronous"
+            orderIntent="" respQueueName="" respQueueProviderUrl=""
+            routingLevelFour="" routingLevelOne="" routingLevelThree=""
+            routingLevelTwo="" soloAccountId="" soloOrderId="" spcDivisionId=""
+            transactionId="" txRoot="" uuid="18212DE8.0174BC28D1F6.F1C81D1"
+            videoPresent="" videoSuspend="" voiceSuspend=""
+            xmlns:ns1="http://www.twc.com/BPS/wf/WebService"
+              xmlns:oracle-xsl-mapper="http://www.oracle.com/xsl/mapper/schemas">
+            <ns2:webapiRequest
+              action="GetCustomerDetails" clientId="OSM" transId="217"
+                xmlns:ns2="http://www.twc.com/BPS/WebService">
+              <ns2:arguments>
+              <ns2:arg
+                name="accountNumber" value="8347100016445861"/>
+              <ns2:arg
+                name="siteCode" value="LNK"/>
+              </ns2:arguments>
+            </ns2:webapiRequest>
+            </ns1:webapiWFRequest>
+          </soapenv:Body>
+          </soapenv:Envelope>
+    name: Get CustomerDetailsB4DelTestRequest
+    to: Charter SIM Connection
+  - direction: In
+    name: Get CustomerDetailsB4DelTestResponse
+- description: Test to delete all details using Phone Number.
+  name: 6. DeleteAccount based on TN Test
+  steps:
+  - connection:
+      authentication: None
+      capture: false
+      create: false
+      endpoint: http://localhost:5555/soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+      keepProcessed: false
+      listen: false
+      name: Charter SIM Connection
+      validateCertificate: false
+    direction: Out
+    insert: []
+    message:
+      headers:
+      - key: Content-Type
+        value: text/xml
+      payload: |
+        <?xml version="1.0" encoding="UTF-8"?>
+          <soapenv:Envelope
+          xmlns:get="http://www.twcable.com/CoreServices/acn/GetAccountServices"
+          xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <soapenv:Header>
+            <wsse:Security
+            soapenv:mustUnderstand="1"
+            xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <wsse:UsernameToken>
+              <wsse:Username>rmg</wsse:Username>
+              <wsse:Password>pionex48</wsse:Password>
+            </wsse:UsernameToken>
+            </wsse:Security>
+          </soapenv:Header>
+          <soapenv:Body>
+            <ns:request
+            xmlns:ns="http://www.twc.com/BPS/sWebAPI"
+              xmlns:webapi="http://www.twc.com/BPS/WebService">
+            <ns2:webapiRequest
+              action="DeleteDPService" clientId="OSM"
+              transId="3c6c41da-9925-404d-90ab-02e1f6fc867d"
+                xmlns:ns2="http://www.twc.com/BPS/WebService">
+              <ns2:arguments>
+              <ns2:arg
+                name="accountNumber" value="8347100015576716"/>
+              <ns2:arg
+                name="siteCode" value="LNK"/>
+              <ns2:arg name="serviceType"
+                value="DPHONE"/>
+              <ns2:arg name="serviceId" value="9136808989"/>
+              </ns2:arguments>
+            </ns2:webapiRequest>
+            </ns:request>
+          </soapenv:Body>
+          </soapenv:Envelope>
+    name: DeleteDetailsTestRequest
+    to: Charter SIM Connection
+  - direction: In
+    insert: []
+    name: DeleteDetailsTestResponse

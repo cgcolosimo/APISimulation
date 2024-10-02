@@ -1,8 +1,7 @@
 schema: SimV1
 connections:
-- authentication: None
-  endpoint: 20222
-  name: 5callscon
+- name: 5callscon
+  port: 20222
 - endpoint: https://tri-dev-sandbox.test.apimanagement.us10.hana.ondemand.com:443/deck
   listen: false
   name: 5callsendpoint

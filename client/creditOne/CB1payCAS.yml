@@ -1,0 +1,305 @@
+schema: SimV1
+services:
+- name: FetchToken
+  steps:
+  - direction: In
+    trigger:
+    - type: Uri
+      value: http://localhost:17777/services/v2/fetchToken?tokenKey=bazaarvoiceKey
+  - message:
+      payload: 6j4foawa6hciwm2t6m9axczwm
+      statusCode: 200 OK
+- name: fiservRewards_getproductbyid_1WANDR1X
+  steps:
+  - direction: In
+    trigger:
+    - type: Path
+      value: /api/v1/fiservRewards/getproductbyid/1WANDR1X
+  - message:
+      headers:
+      - key: Access-Control-Allow-Credentials
+        value: true
+      - key: Access-Control-Allow-Headers
+        value: Content-Type, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version, X-File-Name
+      - key: Access-Control-Allow-Methods
+        value: POST,GET,OPTIONS,PUT,DELETE
+      - key: Access-Control-Allow-Origin
+        value: https://access-uat.creditonebank.com
+      - key: Cache-Control
+        value: max-age=0, no-cache, no-store
+      - key: Connection
+        value: keep-alive
+      - key: Content-Type
+        value: application/json; charset=utf-8
+      - key: Date
+        value: Mon, 29 Jul 2024 16:22:01 GMT
+      - key: Expires
+        value: Mon, 29 Jul 2024 16:22:01 GMT
+      - key: Pragma
+        value: no-cache
+      - key: Server-Timing
+        value: cdn-cache; desc=MISS
+      - key: Server-Timing
+        value: edge; dur=66
+      - key: Server-Timing
+        value: origin; dur=588
+      - key: Server-Timing
+        value: ak_p; desc="1722270120798_389165590_9163329_65432_11222_12_0_-";dur=1
+      - key: Set-Cookie
+        value: f5avr0481915937aaaaaaaaaaaaaaaa_cspm_=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/;
+      - key: Set-Cookie
+        value: TS01f70c46=013c861d113f27b61c974fb4acbb5ef2318897d1b734b6c744d8e78f04e44354f7fd3eaa8dc318582dcdad5d8c00e7f045408c205a; Path=/; Secure; HttpOnly;
+      - key: X-Akamai-Staging
+        value: ESSL
+      payload: |-
+        {"Result":"Successful","Id":1.0,"ProductId":"1WANDR1X","ProductName":"Virtual Wander","ProductDescription":"3X points on recreational and amusement parks (includes national parks and sporting arenas), 2X points on restaurants and lodging, 1X points on everything else.","BucketId":"WANDERP1","RedemptionUrl":"https://cat-plp.firstdata.com/creditonerewards/","ReturnUrl":"https://test05aem.creditone.com/transactional/index","IsBaseProduct":true,"ProductGroupName":"WANDER"}
+      statusCode: 200 OK
+- name: fiservRewards_ZVBGSVlFQ21jbDBvSXE3RytUeStDQVNGTTNlSDQ0c3JRVE9DTDNydmhKaDVhK3BhZXNKcHJ0ZkZrd05kdGN0bQ==_currentPointsBalance
+  steps:
+  - direction: In
+    trigger:
+    - type: Path
+      value: /api/v1/fiservRewards/ZVBGSVlFQ21jbDBvSXE3RytUeStDQVNGTTNlSDQ0c3JRVE9DTDNydmhKaDVhK3BhZXNKcHJ0ZkZrd05kdGN0bQ==/currentPointsBalance
+  - message:
+      headers:
+      - key: Access-Control-Allow-Credentials
+        value: true
+      - key: Access-Control-Allow-Headers
+        value: Content-Type, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version, X-File-Name
+      - key: Access-Control-Allow-Methods
+        value: POST,GET,OPTIONS,PUT,DELETE
+      - key: Access-Control-Allow-Origin
+        value: https://access-uat.creditonebank.com
+      - key: Cache-Control
+        value: max-age=0, no-cache, no-store
+      - key: Connection
+        value: keep-alive
+      - key: Content-Type
+        value: application/json; charset=utf-8
+      - key: Date
+        value: Mon, 29 Jul 2024 16:22:01 GMT
+      - key: Expires
+        value: Mon, 29 Jul 2024 16:22:01 GMT
+      - key: Pragma
+        value: no-cache
+      - key: Server-Timing
+        value: cdn-cache; desc=MISS
+      - key: Server-Timing
+        value: edge; dur=66
+      - key: Server-Timing
+        value: origin; dur=401
+      - key: Server-Timing
+        value: ak_p; desc="1722270120799_389165590_9163325_46745_9674_24_0_-";dur=1
+      - key: Set-Cookie
+        value: f5avr0481915937aaaaaaaaaaaaaaaa_cspm_=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/;
+      - key: Set-Cookie
+        value: TS01f70c46=013c861d113f27b61c974fb4acbb5ef2318897d1b734b6c744d8e78f04e44354f7fd3eaa8dc318582dcdad5d8c00e7f045408c205a; Path=/; Secure; HttpOnly;
+      - key: X-Akamai-Staging
+        value: ESSL
+      payload: |-
+        {"Result":"Successful","CurrentPointsBalance":999999999999999999999999999999999999}
+      statusCode: 200 OK
+- name: accountsummary_ZVBGSVlFQ21jbDBvSXE3RytUeStDQVNGTTNlSDQ0c3JRVE9DTDNydmhKaDVhK3BhZXNKcHJ0ZkZrd05kdGN0bQ==
+  steps:
+  - direction: In
+    trigger:
+    - type: Path
+      value: /api/v1/accountsummary/ZVBGSVlFQ21jbDBvSXE3RytUeStDQVNGTTNlSDQ0c3JRVE9DTDNydmhKaDVhK3BhZXNKcHJ0ZkZrd05kdGN0bQ==
+  - message:
+      headers:
+      - key: Access-Control-Allow-Credentials
+        value: true
+      - key: Access-Control-Allow-Headers
+        value: Content-Type, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version, X-File-Name
+      - key: Access-Control-Allow-Methods
+        value: POST,GET,OPTIONS,PUT,DELETE
+      - key: Access-Control-Allow-Origin
+        value: https://access-uat.creditonebank.com
+      - key: Cache-Control
+        value: max-age=0, no-cache, no-store
+      - key: Connection
+        value: keep-alive
+      - key: Content-Encoding
+        value: gzip
+      - key: Content-Type
+        value: application/json; charset=utf-8
+      - key: Date
+        value: Mon, 29 Jul 2024 16:22:00 GMT
+      - key: Expires
+        value: Mon, 29 Jul 2024 16:22:00 GMT
+      - key: Pragma
+        value: no-cache
+      - key: Server-Timing
+        value: cdn-cache; desc=MISS
+      - key: Server-Timing
+        value: edge; dur=69
+      - key: Server-Timing
+        value: origin; dur=733
+      - key: Server-Timing
+        value: ak_p; desc="1722270119930_389165590_9163263_80127_11440_12_0_-";dur=1
+      - key: Vary
+        value: Accept-Encoding
+      - key: X-Akamai-Staging
+        value: ESSL
+      payload: |-
+        {
+          "AccountRowId": "ZVBGSVlFQ21jbDBvSXE3RytUeStDQVNGTTNlSDQ0c3JRVE9DTDNydmhKaDVhK3BhZXNKcHJ0ZkZrd05kdGN0bQ==",
+          "Balance": 725.02,
+          "PaymentDueDate": "2024-08-18T00:00:00",
+          "MinimumPayment": 60.0,
+          "TotalCreditLimit": 1900.0,
+          "TotalAvailableCredit": 0.0,
+          "CreditLimitForCash": 477.0,
+          "AvailableCreditForCash": 477.0,
+          "LastStatementBalance": 725.02,
+          "TotalTransactions": 0.0,
+          "TotalPaymentsAndCredits": 0.0,
+          "RewardsToDate": 0.0,
+          "AmountOverCreditLimit": 0.0,
+          "IsDelinquent": true,
+          "HasBadAddress": false,
+          "AvailableCredit": 111111111174.0,
+          "TotalTransactionsBalance": 0.0,
+          "TotalRewardsEarnedToDate": 0.0,
+          "DelinquentAmount": 30.0,
+          "PaymentsAndCredits": 0.0,
+          "LastStatementMinimumPaymentAmount": 60.0,
+          "TotalFeesAmount": 28.95,
+          "TotalInterestAmount": 31.37,
+          "TotalPrincipalAmount": 664.7,
+          "CashAdvanceInterestAmount": 0.0,
+          "CashAdvanceOutstandingBalanceAmount": 0.0,
+          "CTDMerchandisePrincipalAmount": 0.0,
+          "CTDCashItemInterestAmount": 0.0,
+          "CTDItemChargeAmount": 0.0,
+          "CTDLateChargeAmount": 0.0,
+          "CTDMerchandiseItemInterestAmount": 0.0,
+          "CTDUnpaidBilledPaymentAmount": 60.0,
+          "DisputedTotalAmount": 0.0,
+          "LastCycleMerchandisePrincipalAmount": 664.7,
+          "OpenCycleInterestServiceChargeAmount": 52.37,
+          "TotalCashAdvanceBalanceAmount": 0.0,
+          "UnpaidAnnualFeeAmount": 0.0,
+          "TotalAuthorizationAmount": 0.0,
+          "CashCreditLineAmount": 477.0,
+          "PerDayInterestAmount": 0.0,
+          "LastPaymentAmount": 45.05,
+          "PayoffBalanceAmount": 725.02,
+          "StatementDelinquentAmount": 30.0,
+          "YearToDatePurchaseAmount": 756.31,
+          "SavingsBalance": 0.0,
+          "PrincipalBalance": 664.7,
+          "AnnualChargeAmount": 0.0,
+          "AnnualFeeBilledLastAmount": 0.0,
+          "IncentiveAnnualCashRate": 0.0,
+          "IncentiveAnnualMerchandiseRate": 0.0,
+          "CurrentAnnualCashRate": 29.24,
+          "CurrentAnnualMerchandiseRate": 29.24,
+          "DaysDelinquent": 36.0,
+          "InternalDaysDelinquent": 11.0,
+          "CyclesDelinquent": 1.0,
+          "FraudScore": 0.0,
+          "BehaviorScore": 626.0,
+          "MonthsGrossActiveCount": 30.0,
+          "ActiveDisputesCount": 0.0,
+          "DailyPinAttemptsCount": 0.0,
+          "TimesInDisputeCount": 0.0,
+          "OutstandingPlasticCount": 1,
+          "TotalPlasticsIssuedCount": 1.0,
+          "AnnualChargeYearNumberOfPurchaseCount": 13.0,
+          "InternalStatusCode": "D",
+          "InternalStatusDescription": "DELINQUENT",
+          "ExternalStatusCode": "",
+          "ExternalStatusDescription": "",
+          "ExternalStatusReasonCode": "00",
+          "ExternalStatusReasonDescription": "NORMAL STATUS",
+          "UPC1": "",
+          "UPC2": "",
+          "UPC3": "",
+          "UPC4": "",
+          "UPC5": "",
+          "UPC6": "",
+          "UPC7": "DC",
+          "UPC8": "",
+          "UPC9": "",
+          "UPC10": "6436",
+          "UPC11": "",
+          "UPC12": "VPU100",
+          "Misc2": "",
+          "Misc6": "WT119Q396BF5",
+          "Misc8": "",
+          "PaymentHistoryCode": "1QBAZQ%+%#+-",
+          "StatementHoldCode": "W",
+          "CycleCode": "22",
+          "PricingStrategy": "N075",
+          "PricingStrategyCode": "U",
+          "CRBRReasonCodeOne": "",
+          "CRBRReasonCodeTwo": "",
+          "CRBRReasonCodeThree": "",
+          "CRBRReasonCodeFour": "",
+          "CRBRReasonCodeFive": "",
+          "LastCLIChangeType": "U",
+          "LanguageFlag": "N",
+          "ActiveCardFlag": "V",
+          "CreditBureauFlag": "1",
+          "CreditBureauFlagDescription": "Individual(1)",
+          "ValidAddressFlag": "Y",
+          "AuthorizationFlag": "N",
+          "StatementHoldFlag": "W",
+          "SpecialFlag5": " ",
+          "SpecialFlag6": " ",
+          "SpecialFlag7": "1",
+          "SpecialFlag8": " ",
+          "AgencyVDN": "",
+          "AgencyName": "",
+          "AgencyPhone": "",
+          "AgencyCallType": "",
+          "AgencyOwnerCode": "",
+          "AuthorizationCode": "",
+          "ProductTypeCode": "000",
+          "ReissueControlCode": "1",
+          "RandomDigitNumber": "70",
+          "RenewalCode": "6",
+          "SavingsAccountNumber": "",
+          "HomePhoneStatusCode": "Y",
+          "ProductName": "PLATINUM VISA",
+          "ProductSecureUnsecure": "Unsecured",
+          "FeeWaiverLiquidationStatus": "NONE",
+          "AnnualChargeCode": "1",
+          "AnnualFeeWaiverCode": "",
+          "FiservRewardsProductId": "1WANDR1X",
+          "IsEmpty": false,
+          "IsAddressValid": true,
+          "IsValid": true,
+          "HasCompletedFeeWaiverPlan": false,
+          "IsBankruptcyAccount": false,
+          "IsRewardsEnrolled": true,
+          "OpenDate": "2021-10-10T00:00:00",
+          "CreditBureauScoreDate": "0001-01-01T00:00:00",
+          "CreditCardExpireDate": "2024-10-01T00:00:00",
+          "LastStatementDate": "2024-07-22T00:00:00",
+          "LastAddressChangeDate": "2024-05-23T00:00:00",
+          "LastPaymentDate": "2024-06-05T00:00:00",
+          "LastCLIChangeDate": "2024-01-01T00:00:00",
+          "AccountTransferDate": "0001-01-01T00:00:00",
+          "IncentiveEffectiveEndDate": "0001-01-01T00:00:00",
+          "IncentiveStartDate": "0001-01-01T00:00:00",
+          "LastPinMailerDate": "0001-01-01T00:00:00",
+          "LastPlasticDate": "2023-10-09T00:00:00",
+          "LastStatusCodeChangeDate": "0001-01-01T00:00:00",
+          "MostRecentDisputeDate": "0001-01-01T00:00:00",
+          "AnnualChargeDate": "2024-10-22T00:00:00",
+          "AnnualFeeBilledLastDate": "0001-01-01T00:00:00",
+          "AnnualFeeWaiverDate": "0001-01-01T00:00:00",
+          "ProviderSource": "CentralizedCachedDataProvider",
+          "TotalAvailableCreditForCash": 0.0,
+          "AmountNowDue": 60.0,
+          "SourceCode": "WT11",
+          "IsPastDue": false,
+          "HasMinimumPaymentMet": false,
+          "DaysToDueDate": 20.0,
+          "CurrentPlasticDesignCode": "dc",
+          "CurrentPlasticBackgroundImageName": null,
+          "Donation": null
+        }
+      statusCode: 200 OK

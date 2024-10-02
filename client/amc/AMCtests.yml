@@ -1,0 +1,42 @@
+schema: SimV1
+
+connections:
+  - name: AMCoutbound
+    endpoint: https://graph.test04-amctheatres.com/
+    listen: false
+
+services:
+- name: AMC address Test
+  steps:
+  - direction: Out
+    to: AMCoutbound
+    name: address request
+    message:
+      headers:
+      - key: Content-Type
+        value: application/json
+      payload: |-
+        {
+          "query": "mutation VerifyAddress($input: AddressInput!) {\n  addressSuggestions(input: $input) {\n    addressSuggestions {\n      addressLine1\n      city\n      state\n      postalCode\n    }\n  }\n}",
+          "variables": {
+            "input": {
+              "addressLine1": "398 Furman Parkways",
+              "addressLine2": "",
+              "city": "West Hubertfurt",
+              "state": "KS",
+              "postalCode": "10380"
+            }
+          },
+          "operationName": "VerifyAddress"
+        }
+  - name: address response
+    verify:
+          - jsonPath: $.errors[0].extensions.exception.originalError.error.errors[0].code
+            value: '9903'
+          - jsonPath: $.errors[0].extensions.exception.originalError.error.errors[0].exceptionMessage
+            value: 'Address IS found.'
+          - jsonPath: $.errors[0].message
+            operator: In
+            value: 'address WAS found'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'

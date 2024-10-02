@@ -1,0 +1,184 @@
+schema: SimV1
+name: simulations api
+connections:
+- name: http
+  port: 17071
+- endpoint: http://localhost:17071/
+  listen: false
+  name: http client
+services:
+- name: client
+  steps:
+  - connection:
+      authentication: None
+      capture: false
+      create: false
+      endpoint: http://localhost:17071/extensions/remove/empty
+      keepProcessed: false
+      listen: true
+      name: http
+      validateCertificate: false
+    direction: Out
+    insert:
+    - value: /extensions/remove/empty
+    message:
+      payload: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <RequestPayload>
+            <AppHdr xmlns="urn:iso:std:iso:20022:tech:xsd:head.001.001.01">
+                <Fr>
+                    <FIId>
+                        <FinInstnId>
+                            <BICFI>DAKVDEFFXXX</BICFI>
+                            <ClrSysMmbId>
+                                <ClrSysId>
+                                    <Prtry>T2S</Prtry>
+                                </ClrSysId>
+                                <MmbId>CBFA2AUser</MmbId>
+                            </ClrSysMmbId>
+                            <Othr>
+                                <Id>TRGTXE2SXXX</Id>
+                            </Othr>
+                        </FinInstnId>
+                    </FIId>
+                </Fr>
+                <To>
+                    <FIId>
+                        <FinInstnId>
+                            <BICFI>TRGTXE2SXXX</BICFI>
+                            <Othr>
+                                <Id>DAKVDEFFXXX</Id>
+                            </Othr>
+                        </FinInstnId>
+                    </FIId>
+                </To>
+                <BizMsgIdr>D2000507964501FL</BizMsgIdr>
+                <MsgDefIdr>sese.023.001.09</MsgDefIdr>
+                <CreDt>2024-05-17T14:27:57Z</CreDt>
+                <Prty>0001</Prty>
+            </AppHdr>
+            <Document xmlns="urn:iso:std:iso:20022:tech:xsd:sese.023.001.07">
+                <SctiesSttlmTxInstr>
+                    <TxId>CSTDY00100238055</TxId>
+                    <SttlmTpAndAddtlParams>
+                        <SctiesMvmntTp>RECE</SctiesMvmntTp>
+                        <Pmt>APMT</Pmt>
+                        <CorpActnEvtId>0000001084548431</CorpActnEvtId>
+                    </SttlmTpAndAddtlParams>
+                    <NbCounts>
+                        <TtlNb>
+                            <CurInstrNb>003</CurInstrNb>
+                            <TtlOfLkdInstrs>008</TtlOfLkdInstrs>
+                        </TtlNb>
+                    </NbCounts>
+                    <Lnkgs>
+                        <Ref>
+                            <PoolId>R000001156604</PoolId>
+                        </Ref>
+                        <RefOwnr>
+                            <AnyBIC>DAKVDEFFXXX</AnyBIC>
+                        </RefOwnr>
+                    </Lnkgs>
+                    <TradDtls>
+                        <TradDt>
+                            <Dt>
+                                <Dt>2024-03-13</Dt>
+                            </Dt>
+                        </TradDt>
+                        <SttlmDt>
+                            <Dt>
+                                <Dt>2024-03-13</Dt>
+                            </Dt>
+                        </SttlmDt>
+                        <MtchgSts>
+                            <Cd>MACH</Cd>
+                        </MtchgSts>
+                        <SttlmInstrPrcgAddtlDtls>1CAS-CBF-POSITION-PFOD-UNIT+10030850+CSTDY</SttlmInstrPrcgAddtlDtls>
+                    </TradDtls>
+                    <FinInstrmId>
+                        <ISIN>DE000KG6NLA6</ISIN>
+                    </FinInstrmId>
+                    <QtyAndAcctDtls>
+                        <SttlmQty>
+                            <Qty>
+                                <Unit>0</Unit>
+                            </Qty>
+                        </SttlmQty>
+                        <SfkpgAcct>
+                            <Id>DAKV7003000</Id>
+                        </SfkpgAcct>
+                        <CshAcct>
+                            <Prtry>CDEEURDEUTDEFFXXX7003</Prtry>
+                        </CshAcct>
+                    </QtyAndAcctDtls>
+                    <SttlmParams>
+                        <Prty>
+                            <Nmrc>0001</Nmrc>
+                        </Prty>
+                        <SctiesTxTp>
+                            <Cd>CORP</Cd>
+                        </SctiesTxTp>
+                        <PrtlSttlmInd>NPAR</PrtlSttlmInd>
+                        <ModCxlAllwd>
+                            <Ind>HELLO NEW STRING</Ind>
+                            <Prtry>
+                                <Id>NONE</Id>
+                                <Issr>T2S</Issr>
+                            </Prtry>
+                        </ModCxlAllwd>
+                    </SttlmParams>
+                    <DlvrgSttlmPties>
+                        <Dpstry>
+                            <Id>
+                                <AnyBIC>DAKVDEFFXXX</AnyBIC>
+                            </Id>
+                        </Dpstry>
+                        <Pty1>
+                            <Id>
+                                <AnyBIC>DAKVDEFFT19</AnyBIC>
+                            </Id>
+                            <SfkpgAcct>
+                                <Id>DAKV8996000</Id>
+                            </SfkpgAcct>
+                        </Pty1>
+                    </DlvrgSttlmPties>
+                    <SttlmAmt>
+                        <Amt Ccy="EUR">5000</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                    </SttlmAmt>
+                </SctiesSttlmTxInstr>
+            </Document>
+        </RequestPayload>
+    to: http
+  - direction: In
+    insert: []
+    verify:
+    - value: keep it
+      xPath: /*[local-name()='Envelope']/*[local-name()='This']
+    - exists: false
+      xPath: /*[local-name()='Envelope']/*[local-name()='Body']
+
+
+
+- name: server
+  steps:
+  - direction: In
+    buffer:
+    - name: deli_sctiessttlmtxinstr_sttlmparams_modcxlallwd_ind
+      xPath: /*[local-name()='RequestPayload']/*[local-name()='Document']/*[local-name()='SctiesSttlmTxInstr']/*[local-name()='SttlmParams']/*[local-name()='ModCxlAllwd']/*[local-name()='Ind']
+    trigger:
+    - uri: /extensions/remove/empty
+  - direction: Out
+    insert:
+    - value: '{TRY[{B[deli_sctiessttlmtxinstr_sttlmparams_modcxlallwd_ind]}][deactivate tag]}'
+      xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='AddResponse']/*[local-name()='AddResult']
+    message:
+      payload: |
+        <Envelope>
+          <This>keep it</This>
+          <Body>
+            <AddResponse>
+              <AddResult></AddResult>
+            </AddResponse>
+          </Body>
+        </Envelope>

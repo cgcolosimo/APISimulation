@@ -1,0 +1,424 @@
+schema: SimV1
+name: CharterUseCase1service
+
+
+
+connections:
+  - name: datapersistanceCon
+    port: 5555
+
+resources:
+  - name: accountsTable
+    type: Table
+    file: accountsTable.csv
+
+services:
+    - name: "AddAccount Service"
+      description: "Service to add an account and persist account number and transId."
+      steps:
+        - name: "CaptureAccountDetails"
+          direction: In
+          from: datapersistanceCon
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiWFRequest']/@*[local-name()='action']
+              value: AddAccount
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+        - name: "AddAccount Service Response"  
+          message:
+            headers:
+              - key: Content-Type
+                value: text/xml
+            payload: |
+                <?xml version="1.0" encoding="ISO-8859-1"?>
+                <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                  <env:Body>
+                    <web:requestResponse xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                      <web:webapiResponse action="AddAccountResponse" clientId="OSM" transId="incomingtransId">
+                        <web:respCode>0000</web:respCode>
+                        <web:respDescription>Account Provisioning Complete</web:respDescription>
+                      </web:webapiResponse>
+                    </web:requestResponse>
+                  </env:Body>
+                </env:Envelope>
+          insert:
+            - xPath: //*[local-name()='webapiResponse']/@*[local-name()='transId']
+              value: '{b[transId]}'
+         
+          resource:
+            insert:
+            - ref: accountsTable
+              value: 
+                  [
+                    "{b[accountNumber]}",
+                    "" ,
+                    "" ,
+                    "" ,
+                    "" ,
+                    "" 
+                  ] 
+          
+#================================================================================================    
+    - name: "UpdateFeaturesCM MAC Service"
+      description: "Service to update CM features and map data to account number."
+      steps:
+        - name: "CaptureUpdateDetailsCM Request"
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiWFRequest']/@*[local-name()='action']
+              value: UpdateFeatures
+            - xPath: //*[local-name()='prop'][@name='serviceCodes']/@*[local-name()='value']
+              value: '*CM*'
+            
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+            - name: macAddressCM
+              xPath: //*[local-name()='prop'][@name='macAddress']/@*[local-name()='value']
+            - name: serviceCodesCM
+              xPath: //*[local-name()='prop'][@name='serviceCodes']/@*[local-name()='value']
+
+        - name: "CaptureUpdateDetailsCM  Response"  
+          message:
+            headers:
+              - key: Content-Type
+                value: text/xml
+            payload: |
+                <?xml version="1.0" encoding="ISO-8859-1"?>
+                <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                  <env:Header/>
+                  <env:Body>
+                    <web:requestResponse xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                        <web:webapiResponse xmlns:web="http://www.twc.com/BPS/WebService" action="UpdateFeaturesResponse" clientId="OSM" transId="Incoming_transId">
+                  <web:respCode>0000</web:respCode>
+                  <web:respDescription>Update CM Features Complete</web:respDescription>
+                </web:webapiResponse>
+                    </web:requestResponse>
+                  </env:Body>
+                </env:Envelope>
+          insert:
+            - xPath: //*[local-name()='webapiResponse']/@*[local-name()='transId']
+              value: '{b[transId]}'
+
+          resource:
+              update:
+              - ref: accountsTable
+                where: Incoming_AccountNumber=='{b[accountNumber]}'
+                value: 
+                  CMMAC: '{b[macAddressCM]}'
+                  serviceCodes: '{b[serviceCodesCM]}'
+
+#================================================================================================
+    - name: "UpdateFeatures MTA MAC Service"
+      description: "Service to update MTA features and map data to account number."
+      steps:
+        - name: "CaptureUpdateDetails MTA Request"
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiRequest']/@*[local-name()='action']
+              value: UpdateFeatures
+            - xPath: //*[local-name()='prop'][@name='serviceCodes']/@*[local-name()='value']
+              value: '*MTA*'
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+            - name: macAddressMTA
+              xPath: //*[local-name()='prop'][@name='macAddress']/@*[local-name()='value']
+            - name: serviceCodesMTA
+              xPath: //*[local-name()='prop'][@name='serviceCodes']/@*[local-name()='value']
+        
+        - name: "CaptureUpdateDetailsMTA  Response"  
+          message:
+              headers:
+              - key: Content-Type
+                value: text/xml
+              payload: |
+                <?xml version="1.0" encoding="ISO-8859-1"?>
+                <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                  <env:Header/>
+                  <env:Body>
+                    <web:requestResponse xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                        <web:webapiResponse xmlns:web="http://www.twc.com/BPS/WebService" action="UpdateFeaturesResponse" clientId="OSM" transId="Incoming_transId">
+                  <web:respCode>0000</web:respCode>
+                  <web:respDescription>Update MTA Features Complete</web:respDescription>
+                </web:webapiResponse>
+                    </web:requestResponse>
+                  </env:Body>
+                </env:Envelope>
+          insert:
+            - xPath: //*[local-name()='webapiResponse']/@*[local-name()='transId']
+              value: '{b[transId]}'
+
+          resource:
+              update:
+              - ref: accountsTable
+                where: Incoming_AccountNumber=='{b[accountNumber]}'
+                value: 
+                  MTAMAC: '{b[macAddressMTA]}'
+                  MTAserviceCodes: '{b[serviceCodesMTA]}'
+
+#================================================================================================
+    - name: "GetCustomerDetails TN Service"
+      description: "Service to get customer details based on TN, account number and transId."
+      steps:
+        - name: "CaptureCustomerDetails"
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiRequest']/@*[local-name()='action']
+              value: GetCustomerDetails
+            - xPath: /*[local-name()='Envelope']/*[local-name()='Body']/*[local-name()='request']/*[local-name()='webapiRequest']/*[local-name()='arguments']/*[local-name()='arg'][1]/@*[local-name()='name']
+              value: serviceId
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+            - name: serviceId
+              xPath: //*[local-name()='arg'][@name='serviceId']/@*[local-name()='value']
+          
+          resource:
+              update:
+              - ref: accountsTable
+                where: Incoming_AccountNumber=='{b[accountNumber]}'
+                value: 
+                  TN: '{b[serviceId]}'
+
+#================================================================================================
+        - name: "CaptureCustomerDetails Response"  
+          message:
+            headers:
+              - key: Content-Type
+                value: text/xml
+            payload: |
+                <?xml version="1.0" encoding="ISO-8859-1"?>
+                <env:Envelope
+                  xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                <env:Header/>
+                <env:Body>
+                  <web:requestResponse
+                    xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                  <web:webapiResponse
+                    action="GetCustomerDetailsResponse" clientId="rmg"
+                    transId="${Incoming_transId}" xmlns:web="http://www.twc.com/BPS/WebService">
+                    <web:respCode>1301</web:respCode>
+                    <web:respDescription>TN Service in context doesn't exist in system (But I think this is supposed to say serviceID updated)</web:respDescription>
+                  </web:webapiResponse>
+                  </web:requestResponse>
+                </env:Body>
+                </env:Envelope>
+          insert:
+            - xPath: //*[local-name()='webapiResponse']/@*[local-name()='transId']
+              value: '{b[transId]}'
+       
+#================================================================================================
+    - name: "GetCustomerDetails AccountNumber Service"
+      description: "Service to get customer details based on AccountNumber and transId."
+      steps:
+        - name: "GetCustomerDetails AccountNum Request"
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiRequest']/@*[local-name()='action']
+              value: GetCustomerDetails
+
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+        - name: "CaptureCustomerDetails Account Num Response"
+          resource:
+              read:
+              - ref: accountsTable
+                where: Incoming_AccountNumber=='{b[accountNumber]}'
+                name: account
+
+
+          message:
+            headers:
+              - key: Content-Type
+                value: text/xml
+            payload: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                <env:Header />
+                <env:Body>
+                  <web:requestResponse xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                  <web:webapiResponse action="GetCustomerDetailsResponse" clientId="OSM" transId="${Incoming_transId}" xmlns:web="http://www.twc.com/BPS/WebService">
+                    <web:respCode xmlns:web="http://www.twc.com/BPS/WebService">0000</web:respCode>
+                    <web:respDescription xmlns:web="http://www.twc.com/BPS/WebService">Success</web:respDescription>
+                    <web:data xmlns:web="http://www.twc.com/BPS/WebService">
+                    <web:object name="Account">
+                      <web:prop name="accountNumber" value="%{account.Incoming_AccountNumber}" />
+                      <web:prop name="siteCode" value="LNK" />
+                      <web:prop name="status" value="Enabled" />
+                      <web:prop name="firstName" value="TEST" />
+                      <web:prop name="lastName" value="TEST" />
+                      <web:prop name="createDate" value="200923180527+0000" />
+                      <web:prop name="updateDate" value="200923180847+0000" />
+                      <web:prop name="regState" value="Complete" />
+                      <web:prop name="regStateLastUpdated" value="200923180847+0000" />
+                      <web:prop name="regStateReason" value="Update Feature" />
+                      <web:prop name="regStateReasonLastUpdated" value="200923180527+0000" />
+                      <web:prop name="migrated" value="Y" />
+                      <web:object name="Address">
+                      <web:prop name="addrLine1" value="2397 INDEPENDENCE DR" />
+                      <web:prop name="addrLine2" value="QA05" />
+                      <web:prop name="addrCity" value="LINCOLN" />
+                      <web:prop name="addrState" value="NE" />
+                      <web:prop name="addrZip" value="685211172" />
+                      </web:object>
+                      <web:object name="Device">
+                      <web:prop name="refId" value="%{account.MTAMAC}" />
+                      <web:prop name="macAddress" value="%{account.MTAMAC}" />
+                      <web:prop name="serialNumber" value=" M83471000137593" />
+                      <web:prop name="isDocsis" value="Y" />
+                      <web:prop name="type" value="mta" />
+                      <web:prop name="model" value="TG1672G" />
+                      <web:prop name="vendor" value="Arris Interactive, L.L.C." />
+                      <web:prop name="status" value="Enabled" />
+                      <web:prop name="quarantineStatus" value="0" />
+                      <web:prop name="createDate" value="200923180847+0000" />
+                      <web:prop name="updateDate" value="200923180857+0000" />
+                      </web:object>
+                      <web:object name="Device">
+                      <web:prop name="refId" value="%{account.CMMAC}" />
+                      <web:prop name="macAddress" value="%{account.CMMAC}" />
+                      <web:prop name="isDocsis" value="Y" />
+                      <web:prop name="type" value="cm" />
+                      <web:prop name="status" value="Enabled" />
+                      <web:prop name="quarantineStatus" value="0" />
+                      <web:prop name="createDate" value="200923180845+0000" />
+                      <web:prop name="updateDate" value="200923180845+0000" />
+                      </web:object>
+                      <web:object name="Service">
+                      <web:prop name="type" value="Account" />
+                      <web:prop name="serviceCodes" value="%{account.serviceCodes}" />
+                      <web:prop name="maxUsers" value="7" />
+                      </web:object>
+                      <web:object name="Service">
+                      <web:prop name="type" value="HSD" />
+                      <web:prop name="serviceCodes" value="%{account.MTAserviceCodes}" />
+                      <web:prop name="serviceProvider" value="Road Runner ISP" />
+                      <web:prop name="refId" value="%{account.MTAMAC}" />
+                      </web:object>
+                      <web:object name="Service">
+                      <web:prop name="type" value="HSD" />
+                      <web:prop name="serviceCodes" value="%{account.serviceCodes}" />
+                      <web:prop name="serviceProvider" value="Road Runner ISP" />
+                      <web:prop name="refId" value="%{account.CMMAC}" />
+                      </web:object>
+                      <web:object name="Service">
+                      <web:prop name="serviceUid" value="100000000000066072" />
+                      <web:prop name="serviceType" value="DPHONE" />
+                      <web:prop name="serviceId" value="%{account.TN}" />
+                      <web:prop name="serviceStatus" value="Normal" />
+                      <web:prop name="serviceProvider" value="TWC-GIA" />
+                      <web:prop name="serviceContext" value="IMS" />
+                      <web:prop name="imsDomain" value="ims.eng.rr.com" />
+                      <web:prop name="serviceCategory" value="residential" />
+                      <web:prop name="serviceKey" value="0174bc275a105790" />
+                      <web:object name="TerminationProfile">
+                        <web:prop name="device.refId" value="%{account.MTAMAC}" />
+                        <web:prop name="type" value="sip" />
+                        <web:prop name="endPoint" value="%{account.MTAMAC}_1" />
+                        <web:prop name="mac" value="%{account.MTAMAC}" />
+                        <web:prop name="port" value="1" />
+                        <web:prop name="callAgent" value="DCA01q" />
+                        <web:prop name="prefix" value="aaln/" />
+                        <web:prop name="maxlines" value="2" />
+                        <web:prop name="vendor" value="Arris Interactive, L.L.C." />
+                        <web:prop name="model" value="TG1672G" />
+                        <web:prop name="serialnumber" value=" M83471000137593" />
+                      </web:object>
+                      <web:object name="LineProperties">
+                        <web:prop name="PIC" value="9002" />
+                        <web:prop name="IPIC" value="9000" />
+                        <web:prop name="LPIC" value="9002" />
+                        <web:prop name="role" value="Primary" />
+                        <web:prop name="displayName" value="TEST TEST" />
+                        <web:prop name="rcDesc" value="LINCOLN" />
+                        <web:prop name="rcState" value="NE" />
+                        <web:prop name="publicIdentityUserId" value="%{account.TN}" />
+                        <web:prop name="PrivateIdentity" value="E41BC6BB189C0756" />
+                      </web:object>
+                      <web:object name="Features">
+                        <web:prop name="package" value="DP01" />
+                        <web:prop name="Privacy" value="None" />
+                        <web:object name="CNAM" />
+                        <web:object name="CWCID" />
+                        <web:object name="CNAMB" />
+                        <web:object name="3WAY" />
+                        <web:object name="BLOCK">
+                        <web:prop name="900" value="Y" />
+                        <web:prop name="976" value="Y" />
+                        <web:prop name="INTL" value="N" />
+                        </web:object>
+                        <web:object name="ICNAM" />
+                      </web:object>
+                      </web:object>
+                    </web:object>
+                    </web:data>
+                  </web:webapiResponse>
+                  </web:requestResponse>
+                </env:Body>
+                </env:Envelope>
+
+#================================================================================================
+    - name: "Delete Device via Telephone Service"
+      description: "Service to delete device via telephone."
+      steps:
+        - name: "DeleteDetails Request"
+          trigger:
+            - type: Uri
+              value: /soa-infra/services/DP/WebAPIService/WebAPIMediator_ep
+            - xPath: //*[local-name()='webapiRequest']/@*[local-name()='action']
+              value: DeleteDPService
+
+          buffer:
+            - name: accountNumber
+              xPath: //*[local-name()='arg'][@name='accountNumber']/@*[local-name()='value']
+            - name: serviceId
+              xPath: //*[local-name()='arg'][@name='serviceId']/@*[local-name()='value']
+            - name: transId
+              xPath: //*[local-name()='webapiRequest']/@*[local-name()='transId']
+        - name: "DeleteDetails Response"
+          message:
+              headers:
+              - key: Content-Type
+                value: text/xml            
+              payload: |
+                <?xml version="1.0" encoding="ISO-8859-1"?>
+                  <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+                    <env:Header/>
+                    <env:Body>
+                      <web:requestResponse xmlns:web="http://www.twc.com/BPS/sWebAPI">
+                  <web:webapiResponse xmlns:web="http://www.twc.com/BPS/WebService" action="DeleteDPServiceResponse" clientId="OSM" transId="Incoming_transId">
+                    <web:respCode>0000</web:respCode>
+                    <web:respDescription>Success Delete</web:respDescription>
+                  </web:webapiResponse>
+                  </web:requestResponse>
+                    </env:Body>
+                  </env:Envelope>
+
+          insert:
+            - xPath: //*[local-name()='webapiResponse']/@*[local-name()='transId']
+              value: '{b[transId]}'
+          resource:
+              delete:
+              - ref: accountsTable
+                where: TN=='{b[serviceId]}'
+
+     

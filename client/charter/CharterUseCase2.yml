@@ -1,0 +1,52 @@
+schema: SimV1
+connections:
+- endpoint: http://localhost:5556/services/v1/solo-accounts/38047661/activate-service-requests?synchronous=false
+  listen: false
+  name: ActivatedServicesOutgoingCon
+- name: ActivatedServicesIncomingCon
+  port: 5556
+services:
+- description: Invoke an initial request and recieve several responses
+  name: ActivatedServices Test
+  steps:
+  - direction: Out
+    message:
+      method: GET
+    name: ActivatedServices Test Request
+    to: ActivatedServicesOutgoingCon
+  - direction: In
+    name: ActivatedServices Test 1st Response
+  - direction: In
+    name: ActivatedServices Test 2nd Response
+- name: ActivatedServiceSIM
+  steps:
+  - direction: In
+    from: ActivatedServicesIncomingCon
+    name: Active Service Request
+    trigger:
+    - type: Path
+      value: /services/v1/solo-accounts/*/activate-service-requests*
+  - direction: Out
+    message:
+      headers:
+      - key: Content-type
+        value: application/json
+      payloadFile: responses/initialResponse.json
+    name: AS Initial Response
+  - direction: In
+    from: ActivatedServicesIncomingCon
+    name: Active Service Request
+    trigger:
+    - type: Path
+      value: /services/v1/solo-accounts/*/activate-service-requests*
+  - direction: Out
+    insert:
+    - jsonPath: $[0].ActivatedServices[0].serviceName
+      value: '{RND[0000000000000][9999999999999]}_{RND[0000000000000000][9999999999999999]}__000005'
+    message:
+      delay: 5000
+      headers:
+      - key: Content-type
+        value: application/json
+      payloadFile: responses/Response2.json
+    name: AS Second Response

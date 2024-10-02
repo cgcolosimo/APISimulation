@@ -1,0 +1,40 @@
+schema: SimV1
+name: CarService contract test
+
+connections:
+- name: CAR Endpoint Live
+  endpoint: http://localhost:51002
+  listen: False
+
+services:
+  - name: Test Car Service (BMW)
+    steps:
+      - direction: Out
+        to: CAR Endpoint Live
+        message:
+          headers:
+            - key : SOAPAction
+              value: 'http://tempuri.org/getCar'
+            - key: Content-Type
+              value: 'text/xml; charset=utf-8'
+          payload: >-
+                    <?xml version="1.0" encoding="utf-8"?>
+                      <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                        <soap:Body>
+                          <getCar xmlns="http://tempuri.org/">
+                            <make>BMW</make>
+                          </getCar>
+                        </soap:Body>
+                      </soap:Envelope>
+        insert:
+          - type: Path
+            value: /carservice
+      
+      - direction: In
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'
+    
+             

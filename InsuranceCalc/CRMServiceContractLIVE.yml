@@ -1,0 +1,43 @@
+schema: SimV1
+name: CRM Service contract test (Live)
+
+connections:
+- name: CRM Live Endpoint
+  endpoint: http://localhost:51003
+  listen: false
+
+services:
+  - name: Test CRM Service (Live)
+    steps:
+      - direction: Out
+        name: Send to Real CRM Service
+        to: CRM Live Endpoint
+        message:
+          headers:
+            - key : SOAPAction
+              value: '"http://tempuri.org/getPerson"'
+            - key: Content-Type
+              value: 'text/xml'
+          payload: |
+                    <?xml version="1.0" encoding="utf-8"?>
+                      <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+                          <s:Body>
+                            <GetPerson xmlns="http://tempuri.org/">
+                              <firstName>max</firstName>
+                              <lastName>mustermann</lastName>
+                            </GetPerson>
+                          </s:Body>
+                        </s:Envelope>
+        insert:
+          - type: Path
+            value: /crmservice
+      
+      - direction: In
+        name: Recieve response from Real CRM service
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'
+    
+             

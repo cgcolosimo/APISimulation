@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 10,
+    "pageSize": 59,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5067",
+            "quoteId": "866368576",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "alyce.johns@toscademo.com",
+            "contact_sfdcId": "0031U00001nGO1YQAW",
+            "account_sfdcId": "0011U00001oBEeEQAW",
+            "opp_sfdcId": "0061U00000N2OkyQAF",
+            "firstName": "Alyce",
+            "lastName": "Johns",
+            "phone": "8583050466",
+            "address": "71773 Jaskolski Knoll",
+            "city": "Ziemannchester",
+            "zip": "27018"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

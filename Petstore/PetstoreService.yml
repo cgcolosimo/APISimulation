@@ -1,73 +1,76 @@
 schema: SimV1
 name: Swagger Petstore
-
 connections:
-  - name: petCon
-    port: 23432
-
-  - name: realPetstoreEndpoint
-    endpoint: https://petstore.swagger.io/v2/
-    listen: false
-
+- name: petCon
+  port: 23432
+- endpoint: https://petstore.swagger.io/v2/
+  listen: false
+  name: realPetstoreEndpoint
 services:
-
 - name: /v2/pet - POST - addPet
   steps:
-  - name: add pet request
+  - buffer:
+    - jsonPath: name
+      name: petName
     direction: In
     from: petCon
+    name: add pet request
     trigger:
     - type: Path
       value: /v2/pet
     - property: Method
       value: POST
-    buffer:
-    - jsonPath: name 
-      name: petName
-  - name: add pet response
+  - direction: Out
+    insert:
+    - jsonPath: id
+      value: '{RND[4]}'
+    - jsonPath: name
+      value: '{B[petName]}'
     message:
-      payload: >-
-          {
+      headers:
+      - key: content-type
+        value: application/json
+      payload: |-
+        {
+          "id": 0,
+          "category": {
             "id": 0,
-            "category": {
+            "name": "string"
+          },
+          "name": "doggie",
+          "photoUrls": [
+            "string"
+          ],
+          "tags": [
+            {
               "id": 0,
               "name": "string"
-            },
-            "name": "doggie",
-            "photoUrls": [
-              "string"
-            ],
-            "tags": [
-              {
-                "id": 0,
-                "name": "string"
-              }
-            ],
-            "status": "available"
-          }
+            }
+          ],
+          "status": "available"
+        }
       statusCode: 200
-    insert:
-      - jsonPath: id
-        value: "{RND[4]}"
-      - jsonPath: name
-        value: "{B[petName]}"
-        
+    name: add pet response
 - name: /v2/pet - GET - findByStatus
   steps:
-  - name: find pet request
+  - buffer:
+    - key: status
+      name: petStatus
+      type: Query
     direction: In
     from: petCon
+    name: find pet request
     trigger:
     - type: Path
       value: /v2/pet/findByStatus
     - property: Method
       value: GET
-    buffer:
-    - type: Query
-      key: status
-      name: petStatus
-  - name: find pet response
-    message:
-      statusCode: 200
+  - direction: Out
     insert:
-      - file: "./Petstore/petData/{B[petStatus]}.json"
+    - file: ./Petstore/petData/{B[petStatus]}.json
+    message:
+      headers:
+      - key: content-type
+        value: application/json
+      statusCode: 200
+    name: find pet response

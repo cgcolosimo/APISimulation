@@ -1,0 +1,27 @@
+{
+    "totalRecords": 1,
+    "page": 8,
+    "pageSize": 51,
+    "data": [
+        {
+            "_id": "64125f1713e65b0af4a140c7",
+            "id": "640b66ee2f02a7b6562f5077",
+            "quoteId": "726659709",
+            "paidStatus": "PAID",
+            "yearlyAmount": "4992",
+            "email": "demo73@toscademo.com",
+            "contact_sfdcId": "0031U000026uskDQAQ",
+            "account_sfdcId": "0011U00002CrmyEQAR",
+            "opp_sfdcId": "0061U00000RYJkwQAH",
+            "firstName": "Jerry",
+            "lastName": "Spencer",
+            "phone": "6077833441",
+            "address": "6782 Klocko River",
+            "city": "New York",
+            "zip": "97895"
+        }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

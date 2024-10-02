@@ -1,0 +1,13 @@
+schema: SimV1
+# test96240
+# Cr3D!T_2023
+connections:
+- capture: true
+  forward:
+    to: real
+    mode: SimulateFirst
+  name: CB1Proxy
+  port: 17777
+- endpoint: https://test05aem.creditone.com/
+  listen: false
+  name: real

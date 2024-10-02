@@ -1,0 +1,69 @@
+schema: SimV1
+resources:
+- file: dataFiles.csv
+  name: dataFiles
+connections:
+- name: atlasCon
+  port: 25151
+- endpoint: http://localhost:25151
+  listen: false
+  name: ToAtlasCon
+services:
+- name: Atlas Data Service FindCustomer
+  steps:
+  - direction: In
+    buffer:
+    - type: Path
+      value: AtlasDataApi/FindCustomer/{XB[id]}
+    
+    from: atlasCon
+    name: getAtlasDataFindCustomerRequest
+    trigger:
+    - type: Path
+      value: /AtlasDataApi/FindCustomer/*
+  - direction: Out
+    insert:
+    - file: "{from[dataFiles][file][id='{B[id]}']}"      
+    name: getAtlasDataFindCustomerResponse
+
+- name: Atlas Data Service Get All Customers
+  steps:
+  - direction: In
+    from: atlasCon
+    name: getAtlasDataGetAllCustomersRequest
+    trigger:
+    - type: Path
+      value: AtlasDataApi/GetAllCustomers*
+  - direction: Out
+    insert:
+    - file: AtlasDB\data\allCustomers.json      
+    name: getAtlasDataGetAllCustomerResponse
+
+
+- name: FindCustomerData
+  steps:
+  - direction: Out
+    insert:
+    - type: Path
+      value: AtlasDataApi/FindCustomer/746878731
+    name: getAtlasData - FindCustomersData
+    to: ToAtlasCon
+  - direction: In
+    name: Recieve Data response
+    verify:
+    - property: StatusCode
+      value: 200 OK
+
+- name: GetAllCustomers
+  steps:
+  - direction: Out
+    insert:
+    - type: Path
+      value: AtlasDataApi/GetAllCustomers?pageNumber=1&pageSize=10
+    name: getAtlasData - GetAllCustomers
+    to: ToAtlasCon
+  - direction: In
+    name: Recieve Data response
+    verify:
+    - property: StatusCode
+      value: 200 OK

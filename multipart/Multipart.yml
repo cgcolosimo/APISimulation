@@ -1,0 +1,40 @@
+schema: SimV1
+
+connections:
+  - name: multiCon
+    port: 14741
+
+services:
+  - name: MultiRequest
+    steps:
+    - name: Request
+      trigger: 
+       - type: Path
+         value: /multipart
+    - name: Response
+      message:
+        headers:
+          - key: Content-Type
+            value: multipart/mixed; boundary=8c22297f-32d0-42b3-b1cd-8b008cb08bdf
+        payload: |-
+          --8c22297f-32d0-42b3-b1cd-8b008cb08bdf
+          Content-Type: application/json
+          Content-Disposition: form-data
+
+          {
+            "name": "Leo",
+            "species": "Cat",
+            "age": 3,
+            "breed": "Siamese",
+            "color": "Cream with dark points",
+            "favoriteFood": "Tuna",
+            "personality": {
+              "friendly": true,
+              "playful": true,
+              "independent": false
+            }
+          }
+          --8c22297f-32d0-42b3-b1cd-8b008cb08bdf--
+          Content-Type: application/pdf
+          Content-Disposition: attachment; filename="cat.pdf"
+          <binary image data of cat.pdf>

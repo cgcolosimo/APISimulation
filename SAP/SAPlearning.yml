@@ -1,0 +1,62 @@
+schema: SimV1
+connections:
+- forward:
+    mode: Learning
+    to: realSAPLearnEndpoint
+  name: SAPlearningCon
+  port: 44301
+- endpoint: https://sapdemo21.tricentis.com:44301
+  listen: false
+  name: realSAPLearnEndpoint
+services:
+- name: SAP Test
+  steps:
+  - direction: Out
+    insert:
+    - type: Path
+      value: /sap/opu/odata/sap/API_BUSINESS_PARTNER/
+    message:
+      headers:
+      - key: Authorization
+        value: Basic dXNlcjAzOkZpb3JpMTIzKw==
+      - key: x-csrf-token
+        value: fetch
+      method: GET
+    name: GetToken
+    to: realSAPLearnEndpoint
+  - direction: In
+    name: SAP token response
+    verify:
+    - property: StatusCode
+      value: 200 OK
+- name: SAP Test 2
+  steps:
+  - connection:
+      authentication: None
+      capture: false
+      create: false
+      endpoint: https://sapdemo21.tricentis.com:44301/sap/opu/odata/SAP/API_BUSINESS_PARTNER/A_BusinessPartner(BusinessPartner='1001726')
+      keepProcessed: false
+      listen: false
+      name: realSAPLearnEndpoint
+      validateCertificate: false
+    direction: Out
+    insert:
+    - type: Path
+      value: /sap/opu/odata/SAP/API_BUSINESS_PARTNER/A_BusinessPartner(BusinessPartner='1001726')
+    message:
+      headers:
+      - key: x-csrf-token
+        value: MHjitcIcLzGD0JtHlxYhKQ==
+      - key: Content-Type
+        value: application/xml
+      - key: Cookie
+        value: sap-usercontext=sap-client=100
+    name: GetBusPart
+    to: realSAPLearnEndpoint
+  - direction: In
+    insert: []
+    name: SAP busPart response
+    verify:
+    - property: StatusCode
+      value: 200 OK

@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 4,
+    "pageSize": 50,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5061",
+            "quoteId": "886575251",
+            "paidStatus": "UNPAID",
+            "yearlyAmount": "1152",
+            "email": "aaron.schimmel@toscademo.com",
+            "contact_sfdcId": "0031U000026ubRrQAI",
+            "account_sfdcId": "0011U00002CrRW9QAN",
+            "opp_sfdcId": "0061U00000RYDdRQAX",
+            "firstName": "Aaron",
+            "lastName": "Schimmel",
+            "phone": "7195491166",
+            "address": "77603 Elaina Hill Suite 721",
+            "city": "Ernestinemouth",
+            "zip": "78832"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

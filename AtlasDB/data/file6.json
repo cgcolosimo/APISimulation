@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 8,
+    "pageSize": 59,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5064",
+            "quoteId": "875282731",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "shemar.moore@toscademo.com",
+            "contact_sfdcId": "0031U00001tVD9CQAW",
+            "account_sfdcId": "0011U00001vsrHzQAI",
+            "opp_sfdcId": "0061U00000NtB7bQAF",
+            "firstName": "Shemar",
+            "lastName": "Moore",
+            "phone": "6010970831",
+            "address": "7406 Jacinthe Isle",
+            "city": "Russelberg",
+            "zip": "73993"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

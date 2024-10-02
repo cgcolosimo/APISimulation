@@ -1,0 +1,43 @@
+schema: SimV1
+name: CRM contract test
+
+connections:
+- name: CRM SIM Endpoint
+  endpoint: http://localhost:14346
+  listen: False
+
+services:
+  - name: Test CRM Service (SIM)
+    steps:
+      - direction: Out
+        name: Send to CRM service
+        to: CRM SIM Endpoint
+        message:
+          headers:
+            - key : SOAPAction
+              value: '"http://tempuri.org/getPerson"'
+            - key: Content-Type
+              value: 'text/xml'
+          payload:  |
+                      <?xml version="1.0" encoding="utf-8"?>
+                        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+                          <s:Body>
+                            <GetPerson xmlns="http://tempuri.org/">
+                              <firstName>jon</firstName>
+                              <lastName>snow</lastName>
+                            </GetPerson>
+                          </s:Body>
+                        </s:Envelope>
+        insert:
+          - type: Path
+            value: /crmservice
+      
+      - direction: In
+        name: Recieve from CRM service
+        verify:
+          - property: StatusCode
+            value: '200 OK'
+          - property:  Delay
+            value: '{REGEX[^([1-9]|[01][0-9][0-9]|20[0-0])$]}'
+    
+             

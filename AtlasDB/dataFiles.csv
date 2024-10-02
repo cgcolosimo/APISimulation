@@ -1,0 +1,11 @@
+id,file
+11111,AtlasDB\data\file1.json
+22222,AtlasDB\data\file2.json
+33333,AtlasDB\data\file3.json
+44444,AtlasDB\data\file4.json
+55555,AtlasDB\data\file5.json
+66666,AtlasDB\data\file6.json
+77777,AtlasDB\data\file7.json
+88888,AtlasDB\data\file8.json
+99999,AtlasDB\data\file9.json
+'*',AtlasDB\data\fileDefault.json

@@ -13,6 +13,8 @@ connections:
     endpoint: https://petstore.swagger.io/v2/
     listen: false
 
+
+    
 services:        
 - name: /v2/pet - GET - findByStatusAVAILABLE
   steps:
@@ -33,6 +35,9 @@ services:
       name: petStatus
   - name: find available pet response
     message:
+      headers:
+        - key: content-type
+          value: application/json
       statusCode: 200
     insert:
       - file: "./Petstore/petData/available.json"
@@ -56,6 +61,9 @@ services:
       name: petStatus
   - name: find sold pet response
     message:
+      headers:
+        - key: content-type
+          value: application/json
       statusCode: 200
     insert:
       - file: "./Petstore/petData/sold.json"

@@ -1,0 +1,79 @@
+schema: SimV1
+name: default
+connections:
+- name: AMCvirtualCon
+  port: 43443
+- endpoint: http://localhost:43443
+  listen: false
+  name: AMC Virtual Endpoint
+services:
+- name: AMC Address Service Bad
+  steps:
+  - direction: In
+    from: AMCvirtualCon
+    name: addressRequest
+    trigger:
+    - jsonPath: $.variables.input.addressLine1
+      value: 398 Furman Parkways
+  - direction: Out
+    message:
+      headers:
+      - key: Access-Control-Allow-Origin
+        value: https://www.test04-amctheatres.com
+      - key: Access-Control-Max-Age
+        value: 600
+      - key: ETag
+        value: W/"cbf-Wa52K4mnNONjVclturcgJsanehs"
+      - key: Set-Cookie
+        value: test04.connect.sid=s%3ABLyWIYdYGCyEMVWdF5WTqz4b5XF4CEW8.VPGjKA3AxduSiwTU07XnwTxt8h9Eb1wQBMxSlURH91Q; Domain=test04-amctheatres.com; Path=/; Expires=Sun, 01 Sep 2024 19:46:30 GMT; HttpOnly
+      - key: Set-Cookie
+        value: __cf_bm=Qi1UMd00A6mWu2Az7xHVYyFVfL3zyR51_eb_Q8lzqps-1722627990-1.0.1.1-tDOzh3c6zzAH0Dblg8t7.9Z7Eh5tlgE..cU_DjCaNytCrPzuvqgGAhgL5sCbuIJVW20jNtrdbgDMpE9d1BO3qg; path=/; expires=Fri, 02-Aug-24 20:16:30 GMT; domain=.test04-amctheatres.com; HttpOnly; Secure; SameSite=None
+      - key: X-Powered-By
+        value: Express
+      - key: CF-Cache-Status
+        value: DYNAMIC
+      - key: Server
+        value: cloudflare
+      - key: CF-RAY
+        value: 8ad09306ffdd7af8-SJC
+      - key: Content-Type
+        value: application/json; charset=utf-8
+      - key: Content-Encoding
+        value: gzip
+      payload: "{\n  \"errors\": [\n    {\n      \"message\": \"The provided address could not be found. But we appreciate your VIRTUAL effort <3\",\n      \"locations\": [\n        {\n          \"line\": 2,\n          \"column\": 3\n        }\n      ],\n      \"path\": [\n        \"addressSuggestions\"\n      ],\n      \"extensions\": {\n        \"code\": \"INTERNAL_SERVER_ERROR\",\n        \"exception\": {\n          \"originalError\": {\n            \"name\": \"StatusCodeError\",\n            \"statusCode\": 400,\n            \"message\": \"400 - {\\\"errors\\\":[{\\\"code\\\":9902,\\\"exceptionMessage\\\":\\\"Address not found.\\\",\\\"message\\\":\\\"The provided address could not be found. Please verify your input.\\\"}]}\",\n            \"error\": {\n              \"errors\": [\n                {\n                  \"code\": 9902,\n                  \"exceptionMessage\": \"Address not found.\",\n                  \"message\": \"The provided address could not be found. Please verify your input.\",\n                  \"statusCode\": 400,\n                  \"uri\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n                  \"method\": \"POST\"\n                }\n              ]\n            },\n            \"options\": {\n              \"method\": \"POST\",\n              \"headers\": {\n                \"X-AMC-Vendor-Key\": \"[redacted]\",\n                \"X-AMC-IsNewSession\": false,\n                \"X-AMC-Session-Id\": \"BLyWIYdYGCyEMVWdF5WTqz4b5XF4CEW8\",\n                \"X-AMC-AppName\": \"Graph (test04 - ACA)\",\n                \"User-Agent\": \"GraphQL\",\n                \"x-forwarded-for\": \"165.225.242.194,172.27.86.157\",\n                \"x-forwarded-proto\": \"http\"\n              },\n              \"json\": true,\n              \"resolveWithFullResponse\": true,\n              \"strictSSL\": false,\n              \"gzip\": true,\n              \"time\": true,\n              \"timeout\": 15000,\n              \"body\": {\n                \"addressLine1\": \"398 Furman Parkways\",\n                \"addressLine2\": \"\",\n                \"city\": \"West Hubertfurt\",\n                \"state\": \"KS\",\n                \"postalCode\": \"10380\"\n              },\n              \"uri\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n              \"simple\": true,\n              \"transform2xxOnly\": false\n            },\n            \"response\": {\n              \"statusCode\": 400,\n              \"body\": {\n                \"errors\": [\n                  {\n                    \"code\": 9902,\n                    \"exceptionMessage\": \"Address not found.\",\n                    \"message\": \"The provided address could not be found. Please verify your input.\",\n                    \"statusCode\": 400,\n                    \"uri\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n                    \"method\": \"POST\"\n                  }\n                ]\n              },\n              \"headers\": {\n                \"cache-control\": \"no-store, no-cache, max-age=0\",\n                \"transfer-encoding\": \"chunked\",\n                \"content-type\": \"application/json\",\n                \"server\": \"Microsoft-IIS/10.0\",\n                \"x-powered-by\": \"ASP.NET, ASP.NET\",\n                \"date\": \"Fri, 02 Aug 2024 19:46:30 GMT\"\n              },\n              \"request\": {\n                \"uri\": {\n                  \"protocol\": \"http:\",\n                  \"slashes\": true,\n                  \"auth\": null,\n                  \"host\": \"api.test04.homeoffice.amc.corp\",\n                  \"port\": 80,\n                  \"hostname\": \"api.test04.homeoffice.amc.corp\",\n                  \"hash\": null,\n                  \"search\": null,\n                  \"query\": null,\n                  \"pathname\": \"/v1/address-suggestions\",\n                  \"path\": \"/v1/address-suggestions\",\n                  \"href\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\"\n                },\n                \"method\": \"POST\",\n                \"headers\": {\n                  \"X-AMC-Vendor-Key\": \"[redacted]\",\n                  \"X-AMC-IsNewSession\": false,\n                  \"X-AMC-Session-Id\": \"BLyWIYdYGCyEMVWdF5WTqz4b5XF4CEW8\",\n                  \"X-AMC-AppName\": \"Graph (test04 - ACA)\",\n                  \"User-Agent\": \"GraphQL\",\n                  \"x-forwarded-for\": \"165.225.242.194,172.27.86.157\",\n                  \"x-forwarded-proto\": \"http\",\n                  \"accept-encoding\": \"gzip, deflate\",\n                  \"accept\": \"application/json\",\n                  \"content-type\": \"application/json\",\n                  \"content-length\": 115\n                }\n              }\n            },\n            \"exceptionMessage\": \"Address not found. Status: 400, Method: POST, URI: http://api.test04.homeoffice.amc.corp/v1/address-suggestions\"\n          },\n          \"type\": \"ERROR\",\n          \"statusCode\": 400,\n          \"uri\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n          \"method\": \"POST\",\n          \"errors\": [\n            {\n              \"code\": 9902,\n              \"exceptionMessage\": \"Address not found.\",\n              \"message\": \"The provided address could not be found. Please verify your input.\",\n              \"statusCode\": 400,\n              \"uri\": \"http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n              \"method\": \"POST\"\n            }\n          ],\n          \"exceptionMessage\": \"Address not found. Status: 400, Method: POST, URI: http://api.test04.homeoffice.amc.corp/v1/address-suggestions\",\n          \"apiCode\": 9902\n        }\n      }\n    }\n  ],\n  \"data\": {\n    \"addressSuggestions\": null\n  }\n}  "
+    name: addressresponse
+- name: AMC Address Service Good
+  steps:
+  - direction: In
+    from: AMCvirtualCon
+    name: goodAddressRequest
+    trigger:
+    - jsonPath: $.variables.input.addressLine1
+      value: '*'
+  - direction: Out
+    message:
+      headers:
+      - key: Access-Control-Allow-Origin
+        value: https://www.test04-amctheatres.com
+      - key: Access-Control-Max-Age
+        value: 600
+      - key: ETag
+        value: W/"cbf-Wa52K4mnNONjVclturcgJsanehs"
+      - key: Set-Cookie
+        value: test04.connect.sid=s%3ABLyWIYdYGCyEMVWdF5WTqz4b5XF4CEW8.VPGjKA3AxduSiwTU07XnwTxt8h9Eb1wQBMxSlURH91Q; Domain=test04-amctheatres.com; Path=/; Expires=Sun, 01 Sep 2024 19:46:30 GMT; HttpOnly
+      - key: Set-Cookie
+        value: __cf_bm=Qi1UMd00A6mWu2Az7xHVYyFVfL3zyR51_eb_Q8lzqps-1722627990-1.0.1.1-tDOzh3c6zzAH0Dblg8t7.9Z7Eh5tlgE..cU_DjCaNytCrPzuvqgGAhgL5sCbuIJVW20jNtrdbgDMpE9d1BO3qg; path=/; expires=Fri, 02-Aug-24 20:16:30 GMT; domain=.test04-amctheatres.com; HttpOnly; Secure; SameSite=None
+      - key: X-Powered-By
+        value: Express
+      - key: CF-Cache-Status
+        value: DYNAMIC
+      - key: Server
+        value: cloudflare
+      - key: CF-RAY
+        value: 8ad09306ffdd7af8-SJC
+      - key: Content-Type
+        value: application/json; charset=utf-8
+      - key: Content-Encoding
+        value: gzip
+      payload: "{\n  \"data\": {\n    \"addressSuggestions\": {\n      \"addressSuggestions\": [\n        {\n          \"addressLine1\": \"1600 Pennsylvania Avenue Northwest\",\n          \"city\": \"Washington\",\n          \"state\": \"DC\",\n          \"postalCode\": \"20500-0005\"\n        }\n      ]\n    }\n  }\n}  "
+    name: addressresponse

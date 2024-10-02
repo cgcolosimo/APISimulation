@@ -4,13 +4,19 @@ connections:
   - name: petEndpoint
     endpoint: http://localhost:23432
     listen: false
+  - name: petForwardFirstEndpoint
+    endpoint: http://localhost:23555/v2/pet/findByStatus?status=available
+    listen: false 
+  - name: petSimulateFirstEndpoint
+    endpoint: http://localhost:23444/v2/pet/findByStatus?status=available
+    listen: false 
 
 services:
   - name: Add Pet Test
     steps:
       - direction: Out
-        name: Add pet test request
         to: petEndpoint
+        name: Add pet test request
         message:
           method: POST
           payload: |
@@ -48,8 +54,8 @@ services:
   - name: Find Pet by Status Test
     steps:
       - direction: Out
-        name: Find pet test request
         to: petEndpoint
+        name: Find pet test request
         message:
           method: GET  
         insert:

@@ -1,0 +1,30 @@
+[
+    {
+        "activeServices" : [
+        ],
+        "assignmentStatus" : "PENDING",
+        "billerTypeDescription" : "D3 Modem 8X4",
+        "cmMacAddress" : "7CB21B953C06",
+        "customerOwned" : false,
+        "deviceId" : "7CB21B953C06",
+        "devicePresent" : true,
+        "deviceType" : "INTERNET",
+        "disconnectedDate" : null,
+        "ecmMacAddress" : "",
+        "hasServices" : true,
+        "make" : "CISCO/SA",
+        "model" : "DPC3008",
+        "mtaMacAddress" : "",
+        "newDevice" : true,
+        "newDeviceInBiller" : false,
+        "ActivatedServices" : [       {
+                
+            }
+        ],
+        "recentDisconnect" : false,
+        "serialNumber" : null,
+        "shippedTransferDevice" : false,
+        "transactionId" : null,
+        "wifiMacAddress" : ""
+    }
+]

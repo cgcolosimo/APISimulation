@@ -1,6 +1,8 @@
 schema: SimV1
 name: Swagger Petstore
 # A catch all, anything real goes to the service but anything fake (ie. status=happy) returns an error from web real service and the simulation takes over
+
+
 connections:
 -  name: petFFCon
    port: 23555
@@ -13,6 +15,8 @@ connections:
 - endpoint: https://petstore.swagger.io/v2/
   listen: false
   name: realPetstoreEndpoint
+
+
 services:
 - name: /v2/pet - GET - findByStatusAVAILABLE
   steps:
@@ -31,5 +35,8 @@ services:
     insert:
     - file: ./Petstore/petData/error.json
     message:
+      headers:
+        - key: content-type
+          value: application/json      
       statusCode: 200
     name: find available pet response

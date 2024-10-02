@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 5,
+    "pageSize": 82,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5068",
+            "quoteId": "864762385",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "alfredo.littel@toscademo.com",
+            "contact_sfdcId": "0031U00001nEoDHQA0",
+            "account_sfdcId": "0011U00001nyjp3QAA",
+            "opp_sfdcId": "0061U00000N25viQAB",
+            "firstName": "DEFAULT",
+            "lastName": "DEFAULT",
+            "phone": "1703413061",
+            "address": "426 Daphney Orchard",
+            "city": "Tevintown",
+            "zip": "39964"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

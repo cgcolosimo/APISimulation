@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 1,
+    "pageSize": 86,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5065",
+            "quoteId": "874254626",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "arnold.watsica@toscademo.com",
+            "contact_sfdcId": "0031U000025aOHqQAM",
+            "account_sfdcId": "0011U000027fzekQAA",
+            "opp_sfdcId": "0061U00000RXRiwQAH",
+            "firstName": "Arnold",
+            "lastName": "Watsica",
+            "phone": "5886980825",
+            "address": "21946 George Fall Suite 194",
+            "city": "New Ginaville",
+            "zip": "15365"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

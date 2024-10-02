@@ -1,0 +1,47 @@
+[
+    {
+        "activeServices" : [
+        ],
+        "assignmentStatus" : "SUCCESS",
+        "billerTypeDescription" : "D3 Modem 8X4",
+        "cmMacAddress" : "7CB21B953C06",
+        "customerOwned" : false,
+        "deviceId" : "7CB21B953C06",
+        "devicePresent" : true,
+        "deviceType" : "INTERNET",
+        "disconnectedDate" : null,
+        "ecmMacAddress" : "",
+        "hasServices" : true,
+        "make" : "CISCO/SA",
+        "model" : "DPC3008",
+        "mtaMacAddress" : "",
+        "newDevice" : true,
+        "newDeviceInBiller" : false,
+        "ActivatedServices" : [
+            {
+                "description" : "Spectrum Internet",
+                "donorLocalExchangeCarrier" : null,
+                "dueDate" : null,
+                "fqdn" : null,
+                "hsdServiceId" : "000005",
+                "lineOfBusiness" : "INTERNET",
+                "lnpPortingStatus" : null,
+                "maxDeviceCount" : 0,
+                "portingStatus" : null,
+                "serviceName" : "1101528692010_8087300020560572_000005",
+                "serviceStatus" : "SUCCESS",
+                "streamingService" : false,
+                "taskStatus" : null,
+                "usocCode" : "D0002",
+                "videoServiceId" : null,
+                "voiceServiceId" : null,
+                "wifiServiceId" : null
+            }
+        ],
+        "recentDisconnect" : false,
+        "serialNumber" : null,
+        "shippedTransferDevice" : false,
+        "transactionId" : null,
+        "wifiMacAddress" : ""
+    }
+]

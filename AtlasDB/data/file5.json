@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 8,
+    "pageSize": 77,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f5063",
+            "quoteId": "876523278",
+            "paidStatus": "PAID",
+            "yearlyAmount": "3216",
+            "email": "jana.wiegand@toscademo.com",
+            "contact_sfdcId": "0031U00001nGO3UQAW",
+            "account_sfdcId": "0011U00001oBEj4QAG",
+            "opp_sfdcId": "0061U00000N2OoMQAV",
+            "firstName": "Jana",
+            "lastName": "Wiegand",
+            "phone": "6048776949",
+            "address": "93987 Donnelly Island",
+            "city": "North Philipberg",
+            "zip": "72839"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

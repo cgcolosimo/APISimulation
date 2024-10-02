@@ -1,0 +1,26 @@
+{
+    "totalRecords": 1,
+    "page": 6,
+    "pageSize": 23,
+    "data": [
+        {
+            "id": "640b66ee2f02a7b6562f505f",
+            "quoteId": "1987697777",
+            "paidStatus": "PAID",
+            "yearlyAmount": "700",
+            "email": "dphillips@toscademo.com",
+            "contact_sfdcId": "0031U00001nGEYrQAO",
+            "account_sfdcId": "0011U00001oB2vtQAC",
+            "opp_sfdcId": "0061U00000N2N0vQAF",
+            "firstName": "Dave",
+            "lastName": "Phillips",
+            "phone": "3852897789",
+            "address": "904 Henderson St",
+            "city": "Atlanta",
+            "zip": "30306"
+          }
+    ],
+    "succeeded": true,
+    "errors": [],
+    "message": null
+}

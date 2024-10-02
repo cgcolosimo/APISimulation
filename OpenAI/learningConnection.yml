@@ -1,0 +1,22 @@
+schema: SimV1
+
+connections:
+        - name: AI_learningCon
+          port: 14444
+          forward:
+              to: realAILearnEndpoint
+              mode: Learning
+              learning:
+                patterns:
+                  - type: Path
+                  - type: Query
+                    key: api-version
+                  - type: Payload
+                  - jsonPath: $.messages[0].role
+                  - jsonPath: $.messages[0].content
+                  - jsonPath: $.messages[1].role
+                  - jsonPath: $.messages[1].content
+                  - jsonPath: $.temperature
+        - name: realAILearnEndpoint
+          endpoint: https://eastus-openai-devtest.openai.azure.com/
+          listen: false
