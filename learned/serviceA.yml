@@ -1,0 +1,77 @@
+schema: SimV1
+services:
+- steps:
+  - trigger:
+    - type: Path
+      value: resourceA/alpha
+    - type: Payload
+      value: ''
+  - message:
+      headers:
+      - key: Date
+        value: Fri, 04 Oct 2024 15:40:57 GMT
+      - key: Server
+        value: Kestrel
+      payload: |-
+        Response from echo:         http://localhost:27073/resourceA/alpha
+      statusCode: 200 OK
+- steps:
+  - trigger:
+    - type: Path
+      value: favicon.ico
+    - type: Payload
+      value: ''
+  - message:
+      headers:
+      - key: Date
+        value: Fri, 04 Oct 2024 15:40:57 GMT
+      - key: Server
+        value: Kestrel
+      payload: |-
+        Response from echo:         http://localhost:27073/favicon.ico
+      statusCode: 200 OK
+- steps:
+  - trigger:
+    - type: Path
+      value: resourceA/beta
+    - type: Payload
+      value: ''
+  - message:
+      headers:
+      - key: Date
+        value: Fri, 04 Oct 2024 15:41:25 GMT
+      - key: Server
+        value: Kestrel
+      payload: |-
+        Response from echo:         http://localhost:27073/resourceA/beta
+      statusCode: 200 OK
+- steps:
+  - trigger:
+    - type: Path
+      value: resourceB/gamma
+    - type: Payload
+      value: ''
+  - message:
+      headers:
+      - key: Date
+        value: Fri, 04 Oct 2024 15:41:26 GMT
+      - key: Server
+        value: Kestrel
+      payload: |-
+        Response from echo:         http://localhost:27073/resourceB/gamma
+      statusCode: 200 OK
+- steps:
+  - trigger:
+    - type: Path
+      value: resourceB/delta
+    - type: Payload
+      value: ''
+  - message:
+      headers:
+      - key: Date
+        value: Fri, 04 Oct 2024 15:41:27 GMT
+      - key: Server
+        value: Kestrel
+      payload: |-
+        Response from echo:         http://localhost:27073/resourceB/delta
+      statusCode: 200 OK

@@ -1,0 +1,44 @@
+schema: SimV1
+name: default
+
+# Use: http://localhost:27074/resourceA/alphaI changed this
+# Use: http://localhost:27074/resourceA/beta
+# Use: http://localhost:27074/resourceB/gamma
+# Use: http://localhost:27074/resourceB/delta
+
+connections:
+  - name: sortingConnection
+    port: 27074
+    forward:
+      mode: Learning
+      to: echoCon
+      learning:
+        #learnOn:
+          #- uri: "/resourceA"
+          #  file: API-A.yml
+          #- uri: "/resourceB*"
+          #  file: API-B.yml
+        pathTemplate: learned/serviceA.yml
+        patterns:
+          - type: Path
+          - type: Payload
+
+  - name: echoCon
+    port: 27073
+
+
+services:
+  # Echo Service
+  - name: echo
+    steps:
+      - name: echorequest
+        from: echoCon
+        buffer:
+          - name: request
+            type: Uri
+          - name: uri
+      - name: echoresponse
+        insert:
+         - value: 'Response from echo: {B[uri]}        {B[request]}'
+  
+  

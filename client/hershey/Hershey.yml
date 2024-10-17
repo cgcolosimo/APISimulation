@@ -1,0 +1,79 @@
+schema: SimV1
+name: default
+
+# localhost:44444/AtlasDataApi/FindCustomer/746878731
+# localhost:44444/AtlasDataApi/FindCustomer/123
+
+
+
+connections:
+
+- name: virtualCustomerEndpoint
+  forward:
+    mode: ForwardFirst
+    simulateOn:
+      statusCodes: 404
+    to: customerDBconOut
+  port: 44444
+
+- name: customerDBconOut
+  endpoint: https://triserveapis.azurewebsites.net
+  listen: false
+
+
+- name: TDS endpoint
+  endpoint: https://catfact.ninja
+  listen: false
+
+
+# Simulation
+services:
+- name: Customer DB
+  steps:
+  - name: request
+    from: virtualCustomerEndpoint
+    buffer:
+      - type: Path
+        value: AtlasDataApi/FindCustomer/{XB[id]}
+    
+  
+  - name: send to TDS
+    direction: Out
+    to: TDS endpoint
+    message:
+      method: GET
+    #insert:
+    #- type: Query
+    #  key: filter
+    #  index: 0
+    #  value: ' "{"""make""" : """{B[Make]}"""}"'
+  
+  - name: TDS ReadItemList Response
+    direction: In
+    from: TDS Client
+    message:
+    verify:
+    - jsonPath: items[*].data.make
+      value: '{B[Make]}'
+    buffer:
+    - jsonPath: items[*].data.fuel
+      name: fuel
+    - jsonPath: items[*].data.seats
+      name: seats
+    - jsonPath: items[*].data.mileage
+      name: miles
+      
+
+  - name: response
+    message: 
+      payload: "the final response id is something"
+      delay: 2000
+    insert:
+      - jsonPath: items[*].data.fuel
+        name: fuel
+      - jsonPath: items[*].data.seats
+        name: seats
+      - jsonPath: items[*].data.mileage
+        name: miles
+
+    
