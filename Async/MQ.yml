@@ -1,0 +1,69 @@
+schema: SimV1
+name: mqservice
+
+templates:
+  connections:
+  - name: MQconnection  
+    type: IbmMq
+    channel: CH1
+    manager: OSV
+    endpoint: your.queuemanager.com
+
+connections:
+  - name: MQqueueIn
+    basedOn: MQconnection
+    listen: true
+    queue: demo.in
+  - name: MQqueueInWrite
+    basedOn: MQconnection
+    listen: false
+    queue: demo.in
+  - name: MQqueueOut
+    basedOn: MQconnection
+    listen: true
+    queue: demo.out
+  - name: MQqueueOutWrite
+    basedOn: MQconnection
+    listen: false
+    queue: demo.out
+
+
+services:
+- name: MQ contract test
+  steps:
+  - name: MQ contract write
+    direction: Out
+    to: MQqueueInWrite
+    message:
+      payload: >-
+        { 
+          "person": { "empId": "123456" }, 
+          "message": "Testing MQ"
+        }
+  - name: MQ contract read
+    direction: In
+    from: MQqueueOut
+    trigger:
+    - jsonPath: name
+      value: chris colosimo
+    verify:
+    - jsonPath: name
+      value: chris colosimo
+
+- name: MQ service
+  steps:
+  - name: MQ simulation read
+    direction: In
+    from: MQqueueIn
+    trigger:
+    - jsonPath: person.empId
+      value: 123456
+  - name: MQ simulation write
+    direction: Out
+    to: MQqueueOutWrite
+    message:
+      payload: >-
+        {
+          "name": "chris colosimo",
+          "result": "test ok - MQ plain"
+        }
