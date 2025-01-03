@@ -1,0 +1,52 @@
+schema: SimV1
+name: kafka
+
+templates:
+  connections:
+    - name: kafkaSsl
+      topic: rol2
+      groupId: iris
+      type: Kafka
+      endpoint: 1.1.1.1:1111
+      clientPropertiesFile: c:\workspaces\AsyncDemo\kafka-ssl\kafka-client.properties
+
+connections:
+  - name: kafkaSslTopic
+    basedOn: kafkaSsl
+  - name: kafkaSslTopic
+    basedOn: kafkaSsl
+    listen: false
+
+services:
+
+- name: Kafka ssl contract test
+  steps:
+  - name: Kafka ssl contract write
+    direction: Out
+    to: kafkaSslTopic
+    message:
+      payload: >-
+        { "book": { "id": "kafka ssl" } }
+  - name: Kafka ssl contract read
+    direction: In
+    trigger:
+    - jsonPath: result
+      value: test ok - kafka ssl
+    verify:
+    - jsonPath: result
+      value: test ok - kafka ssl
+
+- name: kafka ssl service
+  steps:
+  - name: Kafka ssl simulation read
+    direction: In
+    message:
+    trigger:
+    - jsonPath: book.id
+      value: kafka ssl
+  - name: Kafka ssl simulation write
+    direction: Out
+    to: kafkaSslTopic
+    message:
+      payload: >-
+        { "result": "test ok - kafka ssl" }

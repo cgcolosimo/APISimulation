@@ -1,0 +1,88 @@
+schema: SimV1
+name: hcsctest
+connections:
+- endpoint: http://localhost:18001
+  listen: false
+  name: HCSCcon
+services:
+- name: Send Copybook
+  steps:
+  - connection:
+      authentication: None
+      capture: false
+      create: false
+      endpoint: http://localhost:18001
+      keepProcessed: false
+      listen: false
+      name: HCSCcon
+      validateCertificate: false
+    direction: Out
+    insert: []
+    message:
+      headers:
+      - key: 'StrucId      '
+        value: "'MD  '"
+      - key: 'Version      '
+        value: 2
+      - key: 'Report       '
+        value: 00000000
+      - key: 'Message Type '
+        value: 8 (Datagram)
+      - key: 'Expiry       '
+        value: -1 (Never)
+      - key: 'Feedback     '
+        value: 0 (None)
+      - key: 'MQEncoding   '
+        value: 0x'311'
+      - key: 'CCSID        '
+        value: 500
+      - key: 'Format       '
+        value: "'MQSTR   '"
+      - key: 'Priority     '
+        value: 0
+      - key: 'Persistence  '
+        value: 0 (Not Persistent)
+      - key: 'Message Id   '
+        value: C3E2D840C3E2D8F34040404040404040DFB508C5F22C0141 'CSQ CSQ3        ...E2...'
+      - key: 'Correl. Id   '
+        value: F2F0F2F4F1F0F1F5F0F6F3F7D1F6F0E7003935480068238C '202410150637J60X........'
+      - key: 'Backout Cnt. '
+        value: 0
+      - key: 'ReplyToQ     '
+        value: "'BCHIP.DUP.SIT8.RSP                              '"
+      - key: 'ReplyToQMgr  '
+        value: "'CSQ3                                            '"
+      - key: UserId
+        value: "'u448167     '"
+      - key: AccountingTkn
+        value: 150CC9D3C14BD3F4F6E8C1C2D4E8B508C5BE1FA0000100000000000000000000
+      - key: 'ApplIdentity '
+        value: "'                                '"
+      - key: 'PutApplType  '
+        value: 1 (CICS)
+      - key: PutApplName
+        value: "'A46IABECGSVC                '"
+      - key: 'Put Date     '
+        value: "'20240916'"
+      - key: 'Put Time     '
+        value: "'23242823' (Local)"
+      - key: ApplOriginDat
+        value: "'    '"
+      - key: 'Group Id     '
+        value: 000000000000000000000000000000000000000000000000
+      - key: 'Msg Seq No.  '
+        value: 1
+      - key: 'Offset       '
+        value: 0
+      - key: 'MsgFlags     '
+        value: 00000000
+      - key: Original Len.
+        value: -1
+      payload: "+00000000 28212190000011773000000PH311000000008312789036244970160920717180107492956320202410150637J60X0000........202401212024012176511119826329070008121\r\n+0000008F 235A50421085919IL1 0 000000092.88 000000000.00 000000000.000924067196600    0 000000273.00TOMPTDMS       DALE       19561122067M000ME210       \r\n+0000011E                                                                                                                                                \r\n+000001AD                          I2510     10                               0020012024012120240121             00647486951619956547421085919 000000273.\r\n+0000023C 00000019921              321099214  I2510      000000092.88-000000000.01 000000118.48 000000000.00                              002202401212024\r\n+000002CB 0121             00647486951619956547421085919 000000000.00000011123              32101123F  I2510      000000000.00-000000000.01 000000000.00 \r\n+0000035A 000000000.00                              "
+    name: Send Copybook
+    to: HCSCcon
+  - connection: {}
+    direction: In
+    insert: []
+    message:
+      payload: "              "

@@ -1,0 +1,54 @@
+schema: SimV1
+connections:
+- name: delaycon
+  port: 15555
+- name: sendNumber
+  endpoint: http://localhost:15555      
+services:
+- name: less than 10
+  steps:
+  - trigger:
+    - jsonPath: number
+      operator: LessOrEqual
+      dataType: Numeric
+      value: 10
+  - message:
+      headers:
+      - key: Content-Type
+        value: application/json
+      payload: |
+        {"response": "less than 10"}
+      statusCode: 200 OK
+- name: greater than 10
+  steps:
+  - trigger:
+    - jsonPath: number
+      operator: GreaterOrEqual
+      dataType: Numeric
+      value: 11
+  - insert:
+    - property: Delay
+      value: '{RND[200][800]}'
+    message:
+      headers:
+      - key: Content-Type
+        value: application/json
+      payload: |
+        {"response": "greater than 10"}
+      statusCode: 200 OK
+
+
+
+- name: SND Number Test
+  steps:
+  - direction: Out
+    to: sendNumber
+    name: number request
+    message:
+      headers:
+      - key: Content-Type
+        value: application/json
+      method: POST
+      payload: |-
+        {"number": 12}
+  - name: number response

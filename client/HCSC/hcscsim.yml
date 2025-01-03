@@ -1,0 +1,65 @@
+schema: SimV1
+name: HCSC Simulation
+
+templates:
+  connections:
+  - name: MQconnection  
+    type: IbmMq
+    channel: CH1
+    manager: OSV
+    endpoint: your.queuemanager.com
+
+connections:
+  - name: MQqueueIn
+    basedOn: MQconnection
+    listen: true
+    queue: demo.in
+  - name: MQqueueInWrite
+    basedOn: MQconnection
+    listen: false
+    queue: demo.in
+  - name: MQqueueOut
+    basedOn: MQconnection
+    listen: true
+    queue: demo.out
+  - name: MQqueueOutWrite
+    basedOn: MQconnection
+    listen: false
+    queue: demo.out
+  - name: SimpleHttp
+    port: 18001
+    listen: true
+
+
+services:
+- name: HCSC Service
+  steps:
+  - name: MQ simulation read
+    direction: In
+    from: SimpleHttp
+    trigger:
+      - type: Header
+        key: UserId
+        value: "*u448167*"
+      - type: Header
+        key: PutApplName
+        value: "*A46IABECGSVC*"
+      - type: Payload
+        range : 666..677
+        value: 'I2510*'
+      - type: Payload
+        range : 270..281
+        value: 'DALE*'
+    buffer:
+      - type: Payload
+        range : 270..281
+        name: firstName
+  - name: MQ simulation write
+    direction: Out
+   # to: MQqueueOutWrite
+    insert:
+      - file: ./Client/HCSC/Data/Dup_IL-rsp.txt
+      - type: Payload
+        range : 1311..1316
+        #range : 1321..1332
+        value: '{b[firstName]}'

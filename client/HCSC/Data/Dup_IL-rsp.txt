@@ -1,0 +1,36 @@
+[  364 bytes] Message Descriptor (MQMD)
+StrucId      :'MD  '
+Version      :2
+Report       :00000000
+Message Type :1 (Request msg)
+Expiry       :-1 (Never)
+Feedback     :0 (None)
+MQEncoding   :0x'111'
+CCSID        :1208
+Format       :'MQSTR   '
+Priority     :4
+Persistence  :1 (Persistent)
+Message Id   :414D51204D554C4553495431202020204FC4E566B50F0D40
+              'AMQ MULESIT1    O..f...@'
+Correl. Id   :F2F0F2F4F1F0F1F5F0F6F3F7D1F6F0E7003935480068238C
+              '202410150637J60X........'
+Backout Cnt. :0
+ReplyToQ     :'BCHIP.DUP.SIT8.RSP                              '
+ReplyToQMgr  :'MULESIT1                                        '
+UserId       :'A5754022    '
+AccountingTkn:0000000000000000000000000000000000000000000000000000000000000000
+ApplIdentity :'                                '
+PutApplType  :28 (Java)
+PutApplName  :'ClaimDupCheckAdapter-SIT8   '
+Put Date     :'20240916'
+Put Time     :'12542930' (Local)
+ApplOriginDat:'    '
+Group Id     :000000000000000000000000000000000000000000000000
+Msg Seq No.  :1
+Offset       :0
+MsgFlags     :00000000
+Original Len.:-1
+[  144 bytes] Message Content
++00000000 28212190000011773000000PH31100000000831278903010202410150637J60X00000D
++00000046  70   129YY 002N1   1291290202409050901H00X  2   1291290202409050901H0
++0000008C 0X  
